@@ -1,0 +1,45 @@
+.form-field {
+    margin-bottom: 30px;
+    position: relative
+}
+
+.form-field input {
+    width: calc(100% - 40px);
+    font-size: 35px;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+}
+
+.form-field input::placeholder {
+    color: white
+}
+
+.form-field input:focus {
+    outline: unset;
+}
+
+.form-field label {
+    position: absolute;
+    font-size: 35px;
+    color: #CBCBCB;
+    z-index: 2;
+    top: 17px;
+    left: 22px;
+    background: white;
+    letter-spacing: 0;
+    cursor: auto;
+    transition: left 0.5s ease,
+        top .5s ease,
+        font-size .5s ease,
+        padding .5s ease,
+}
+
+
+.form-field input:focus+label,
+.form-field input:not(:placeholder-shown)+label {
+    top: -15px;
+    left: 15px;
+    font-size: 30px;
+    padding: 0 10px;
+}
