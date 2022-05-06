@@ -1,27 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Login from './Pages/Login/Login';
-import About from './Pages/About/About';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, } from 'react-router-dom';
+import Login from './Controllers/Login/Login';
+import About from './Controllers/About/About';
+import Recent from './Controllers/Recent/Recent';
+import Settings from './Controllers/Settings/Settings';
 import './App.css';
+
+window.API_URL = "http://localhost:8080/api";
+window.BACKEND_BASE_URL = "http://localhost:8080";
+window.FRONTEND_BASE_URL = "http://localhost:3000";
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">login</Link>
-          </li>
-          <li>
-            <Link to="/about">about</Link>
-          </li>
-        </ul>
         <Routes>
-          <Route exact path='/about' element={< About />}></Route>
           <Route exact path='/login' element={< Login />}></Route>
+          <Route exact path='/' element={< Recent />}></Route>
+          <Route exact path='/settings' element={<Settings />}></Route >
         </Routes>
       </div>
     </Router>

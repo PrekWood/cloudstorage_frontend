@@ -10,7 +10,11 @@ function SubmitButton(props) {
 
     return (
         <>
-            <button className="submit-button" onClick={onClickFunction}>{props.text}</button>
+            <button
+                type="submit"
+                className="submit-button"
+                onClick={onClickFunction}
+            >{props.text}</button>
         </>
     );
 }

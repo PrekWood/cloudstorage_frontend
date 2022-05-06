@@ -1,8 +1,38 @@
 @font-face {
     font-family: 'Tw Cen MT';
-    src: url('./Fonts/Tw Cen MT/TwCenMT.ttf') format('ttf')
+    src: url('./../public/Fonts/Tw Cen MT/TwCenMT.ttf') format('ttf')
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Syne&display=swap');
 
 * {
     font-family: "Tw Cen MT"
+}
+
+input,
+input::placeholder,
+label {
+    font-family: "Syne"
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: unset;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+.filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.215);
 }

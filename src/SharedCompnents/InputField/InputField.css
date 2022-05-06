@@ -5,8 +5,8 @@
 
 .form-field input {
     width: calc(100% - 40px);
-    font-size: 35px;
-    padding: 15px 20px;
+    font-size: 30px;
+    padding: 17px 20px;
     border: 2px solid #e0e0e0;
     border-radius: 5px;
 }
@@ -21,11 +21,11 @@
 
 .form-field label {
     position: absolute;
-    font-size: 35px;
+    font-size: 32px;
     color: #CBCBCB;
     z-index: 2;
-    top: 17px;
-    left: 22px;
+    top: 18px;
+    left: 21px;
     background: white;
     letter-spacing: 0;
     cursor: auto;
@@ -35,11 +35,77 @@
         padding .5s ease,
 }
 
-
 .form-field input:focus+label,
 .form-field input:not(:placeholder-shown)+label {
     top: -15px;
     left: 15px;
     font-size: 30px;
     padding: 0 10px;
+}
+
+.form-field.half {
+    display: inline-block;
+    width: calc(50% - 10px);
+}
+
+.form-field.half:nth-child(2n) {
+    margin-right: 20px;
+}
+
+.form-field.invalid label {
+    color: #ff9191;
+}
+
+.form-field.invalid input {
+    border: 2px solid #ff9191;
+}
+
+
+.form-field.valid label {
+    color: limegreen;
+}
+
+.form-field.valid input {
+    border: 2px solid limegreen;
+}
+
+button.show-password {
+    position: absolute;
+    top: 25px;
+    background: transparent;
+    border: unset;
+    right: 10px;
+    cursor: pointer;
+}
+
+button.show-password img {
+    width: 40px;
+}
+
+.form-field.pin,
+.form-field.pin label,
+.form-field.pin input,
+.form-field.pin input::placeholder {
+    font-family: "Tw Cen MT";
+}
+
+.form-field.pin input::placeholder {
+    color: #e0e0e0;
+    font-size: 40px;
+}
+
+.form-field.pin input {
+    text-align: center;
+}
+
+.form-field.pin label {
+    display: none;
+}
+
+.form-field.pin.invalid input::placeholder {
+    color: #ff9191;
+}
+
+.form-field.pin input {
+    font-size: 40px;
 }
