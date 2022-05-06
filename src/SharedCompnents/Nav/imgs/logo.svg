@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="59" height="42.243" viewBox="0 0 59 42.243">
+  <defs>
+    <linearGradient id="linear-gradient" x2="0.827" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#07e9fe"/>
+      <stop offset="1" stop-color="#f955d7"/>
+      <stop offset="1" stop-color="#f94dd5"/>
+    </linearGradient>
+  </defs>
+  <g id="folder-svgrepo-com" transform="translate(-1200 -21)">
+    <g id="Group_6" data-name="Group 6" transform="translate(1200 21)">
+      <path id="Path_15" data-name="Path 15" d="M57.607,57.565h-7.89V51.718a1.392,1.392,0,0,0-1.392-1.392H29.455l-3.337-7.1a1.392,1.392,0,0,0-1.26-.8H1.392A1.392,1.392,0,0,0,0,43.817V83.276a1.4,1.4,0,0,0,1.393,1.392H48.325a1.393,1.393,0,0,0,1.3-.9l9.282-24.318A1.393,1.393,0,0,0,57.607,57.565ZM2.785,45.21h21.19l3.337,7.1a1.392,1.392,0,0,0,1.26.8H46.932v4.455H10.674a1.393,1.393,0,0,0-1.3.9L2.785,75.724ZM47.366,81.884H3.414L11.633,60.35H55.585Z" transform="translate(0 -42.425)" fill="url(#linear-gradient)"/>
+    </g>
+  </g>
+</svg>

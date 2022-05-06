@@ -1,0 +1,48 @@
+.switch {
+    width: 100px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00000026;
+    position: relative;
+}
+
+.switch-option {
+    padding: 12px 15px;
+    margin: 0;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.switch-option img,
+.selected-option img {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    margin: 0;
+}
+
+.selected-option {
+    background: white;
+    margin: -5px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #0000001a;
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    left: 0;
+    transition: all .5s ease;
+}
+
+.selected-option.right {
+    left: calc(100% - 42px);
+    transform: rotate(180deg);
+}

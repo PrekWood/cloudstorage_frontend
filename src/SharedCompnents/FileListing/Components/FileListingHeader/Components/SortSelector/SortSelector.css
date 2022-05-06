@@ -1,0 +1,68 @@
+.select-field.sorting-select {
+    border: unset;
+}
+
+.select-field.sorting-select .select {
+    height: unset;
+    width: unset;
+    border: unset;
+    box-shadow: 0 0 5px #00000030;
+    border-radius: 10px;
+    padding: 0;
+}
+
+.select-field.sorting-select img:not(.select-arrow) {
+    width: 25px;
+    height: auto;
+}
+
+.select-field.sorting-select img.select-arrow {
+    margin-left: 10px;
+}
+
+.select-visible-part {
+    margin: 10px;
+}
+
+.select-field.open.sorting-select .select::before {
+    content: '';
+    position: absolute;
+    background: white;
+    width: 100%;
+    bottom: 0;
+    height: 8px;
+    border-bottom: 1px solid #ededed;
+    z-index: 10;
+}
+
+.select-field.open.sorting-select .select-drop-down-list {
+    box-shadow: 0 0 5px #00000038;
+    border: unset;
+    padding: 0;
+    max-height: 300px;
+}
+
+.select-field.open.sorting-select .select-drop-down-list img {
+    margin: 0;
+}
+
+.select-field.open.sorting-select .select-drop-down-list option {
+    display: block;
+}
+
+.select-field.sorting-select .select-selected-option {
+    min-height: 35px
+}
+
+.select-field.open.sorting-select .select-drop-down-list .option {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #f3f3f3;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.select-field.open.sorting-select .select-drop-down-list .option span {
+    display: none;
+}

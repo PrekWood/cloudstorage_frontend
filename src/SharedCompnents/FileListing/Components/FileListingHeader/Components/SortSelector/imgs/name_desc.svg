@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="15" viewBox="0 0 18 15">
+  <defs>
+    <clipPath id="clip-path">
+      <rect y="5" width="18" height="15" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Scroll_Group_3" data-name="Scroll Group 3" transform="translate(0 -5)" clip-path="url(#clip-path)" style="isolation: isolate">
+    <g id="Group_47" data-name="Group 47" transform="translate(15899 -11111)">
+      <text id="A" transform="translate(-15888 11131)" fill="#dbdbdb" font-size="12" font-family="TwCenMT-Regular, Tw Cen MT" letter-spacing="0.002em"><tspan x="0" y="0">A</tspan></text>
+      <rect id="Rectangle_100" data-name="Rectangle 100" width="5" height="4.527" transform="translate(-15886.832 11126.671) rotate(65)" fill="#fff"/>
+      <text id="A-2" data-name="A" transform="translate(-15899 11131)" fill="#dbdbdb" font-size="23" font-family="TwCenMT-Regular, Tw Cen MT" letter-spacing="0.002em"><tspan x="0" y="0">A</tspan></text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,137 @@
+.file-list-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    margin: 0 15px;
+    border-bottom: 2px solid #ededed;
+    position: relative;
+}
+
+.file-list.list {
+    background: white;
+    border-radius: 5px;
+    margin: 20px 0;
+    box-shadow: 0 0 5px #0000000f;
+}
+
+
+.file-list-img {
+    width: 10%;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-list-img img.file-type-img {
+    margin: 0;
+}
+
+.file-list-item span.file-extention {
+    color: black;
+}
+
+
+.file-list-name {
+    width: 30%;
+}
+
+
+
+.file-list-type {
+    width: 10%;
+}
+
+.file-list-size {
+    width: 10%;
+}
+
+.file-list-date {
+    width: 20%;
+}
+
+.file-list-actions {
+    width: 20%;
+}
+
+.file-list-item.file-list-headers {
+    font-size: 25px;
+    color: #D1D1D1;
+}
+
+
+.file-list-item span {
+    color: #DBDBDB;
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+span.file-list-name {
+    font-size: 20px;
+    color: black;
+    text-transform: none;
+    word-break: break-all;
+}
+
+.file-list-item button.file-favorites {
+    position: initial;
+    margin-left: 10px
+}
+
+button.file-list-download svg {
+    height: 20px;
+    width: 20px;
+    margin-right: 15px;
+}
+
+button.file-list-download {
+    display: inline-flex;
+    align-items: center;
+    font-size: 21px;
+    line-height: 21px;
+    padding: 10px 15px;
+    box-shadow: 0 0 5px #00000029;
+    border-radius: 5px 0 0 5px;
+}
+
+.file-list-dropdown-toggler {
+    background: white;
+    padding: 10px 10px;
+    box-shadow: 0 0 5px #00000029;
+    border-radius: 0 5px 5px 0;
+    display: inline-flex;
+    height: 41px;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-dropdown-links {
+    cursor: pointer;
+}
+
+.file-list-download-dropdown {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+a.file-dropdown-links span {
+    color: black;
+    font-size: 20px;
+    text-transform: none;
+}
+
+
+.file-list-download-dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.file-list-download-dropdown .file-dropdown-menu {
+    top: calc(100% + 3px);
+    left: 0;
+    right: 0;
+    box-shadow: 0 0 5px #00000029;
+    border-radius: 0 0 5px 5px;
+}

@@ -1,0 +1,121 @@
+.file-grid {
+    width: calc(25% - 140px);
+    margin: 20px 40px;
+    background: white;
+    border-radius: 10px;
+    padding: 50px 30px;
+    box-shadow: 0 5px 10px #00000017;
+    position: relative;
+}
+
+img.file-type-img {
+    height: 45px;
+    margin-bottom: 20px;
+    width: auto;
+}
+
+.file-grid span {
+    display: block;
+}
+
+.file-list {
+    margin: 20px -40px
+}
+
+.file-icon {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin: auto;
+    height: 150px;
+    width: calc(0.8095 * 150px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+span.file-extention {
+    text-transform: uppercase;
+    font-size: 22px;
+}
+
+span.file-name {
+    font-size: 30px;
+    text-align: center;
+    margin: 20px 0;
+    word-break: break-all;
+}
+
+span.file-size {
+    color: #DBDBDB;
+    font-size: 20px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+button.file-favorites {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px;
+}
+
+button.file-favorites>svg,
+button.file-menu>svg {
+    height: 18px;
+    width: auto;
+}
+
+button.file-menu {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 5px;
+}
+
+.file-dropdown-filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.file-dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    padding: 10px 10px;
+    border-radius: 5px 0 5px 5px;
+}
+
+.file-dropdown-links {
+    display: flex;
+    align-items: center;
+    padding: 7px 5px;
+    width: calc(100% - 10px);
+    border-radius: 5px;
+}
+
+.file-dropdown-links:hover {
+    background-color: rgb(241, 241, 241);
+}
+
+.file-dropdown-links svg {
+    width: 20px;
+    height: auto;
+    max-height: 20px;
+}
+
+.file-dropdown-links span {
+    font-size: 20px;
+    margin-left: 15px;
+}

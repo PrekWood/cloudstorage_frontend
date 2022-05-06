@@ -1,0 +1,63 @@
+.login-form {
+    background: white;
+    z-index: 2;
+    width: calc(30vw - 100px);
+    right: 5vw;
+    border-radius: 5px;
+    padding: 50px;
+    position: absolute;
+    top: -100vh;
+    transition: top 0.7s ease;
+}
+
+
+a.form-link {
+    display: block;
+    font-size: 25px;
+    text-align: center;
+    color: #ababab;
+    cursor: pointer;
+}
+
+.login-form.hidden {
+    animation: hideLoginForm 1.2s forwards;
+    transition: top 0.7s ease;
+}
+
+.login-form.active {
+    animation: showLoginForm 1s forwards;
+}
+
+.login-form.invalid {
+    animation: shakeForm .3s;
+}
+
+@keyframes hideLoginForm {
+    0% {
+        top: calc(50vh - var(--loginFormTop));
+    }
+
+    20% {
+        top: calc(50vh - calc(var(--loginFormTop) + 50px));
+    }
+
+    100% {
+        top: 150vh;
+        /* opacity: 0;
+        z-index: -1; */
+    }
+}
+
+@keyframes showLoginForm {
+    0% {
+        top: -100vh;
+    }
+
+    50% {
+        top: -100vh;
+    }
+
+    100% {
+        top: calc(50vh - var(--loginFormTop));
+    }
+}

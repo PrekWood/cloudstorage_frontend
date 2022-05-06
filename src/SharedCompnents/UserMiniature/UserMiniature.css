@@ -1,0 +1,95 @@
+.loged-in-user.navigation {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    border: unset;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.loged-in-user.navigation img.user-icon {
+    width: 55px;
+    height: 55px;
+    z-index: 10;
+}
+
+.navigation span.user-name {
+    text-transform: uppercase;
+    color: #DBDBDB;
+    font-size: 19px;
+    margin-top: 12px;
+}
+
+
+.user-modal {
+    position: absolute;
+    width: 150px;
+    bottom: 20px;
+    left: calc(100% + 20px);
+    background-color: white;
+    z-index: 10;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.078);
+    transform: scale(1);
+    transition: all .5s ease;
+    z-index: 8;
+}
+
+
+
+.user-modal.closed {
+    transform: scale(0.1);
+    left: -10px;
+}
+
+.user-modal a {
+    font-size: 25px;
+    padding: 10px 0;
+    border-bottom: 1.5px solid #DBDBDB;
+}
+
+.user-modal a:first-child {
+    padding-top: 0;
+}
+
+.user-modal a:last-child {
+    border: unset;
+    padding-bottom: 0;
+}
+
+.user-modal-filter.filter {
+    background-color: transparent;
+}
+
+.user-modal-filter.filter.hidden {
+    display: none;
+}
+
+.user-modal::after {
+    content: "";
+    position: absolute;
+    top: calc(50% - 20px);
+    left: -40px;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid transparent;
+    border-right: 20px solid white;
+}
+
+.user-modal::before {
+    content: "";
+    position: absolute;
+    top: calc(50% - 7px);
+    left: -15px;
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 50%;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.15)
+}

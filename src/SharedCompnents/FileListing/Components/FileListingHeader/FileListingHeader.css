@@ -1,0 +1,175 @@
+span#logo_text {
+    font-size: 50px;
+    transition: opacity .5s ease;
+}
+
+.file-listing-btn {
+    background: white;
+    border: unset;
+    box-shadow: 0 0 5px #00000045;
+    display: flex;
+    align-items: center;
+    float: right;
+    margin-left: 30px;
+    font-size: 30px;
+}
+
+.listing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #dbdbdb7d;
+    position: relative;
+}
+
+.listing-header-btns {
+    display: flex;
+    align-items: center;
+}
+
+.listing-header-btn {
+    font-size: 28px;
+    background: white;
+    border: unset;
+    box-shadow: 0 0 5px #0000004f;
+    border-radius: 5px;
+    margin-left: 30px;
+    padding: 7px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.listing-header-btn svg {
+    height: 21px;
+    width: auto;
+    margin-right: 15px;
+}
+
+#hiddenFileUploadField {
+    display: none;
+}
+
+.listing-sorting-and-layout-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.listing-header.search span#logo_text {
+    opacity: 0;
+}
+
+form.file-upload-form {
+    max-width: 100%;
+    margin-right: 170px;
+    transition: all .5s ease;
+}
+
+.listing-header-btns.empty form.file-upload-form {
+    margin: 0;
+}
+
+input#fileUploadInputField.hidden,
+button#fileUploadSubmitButton {
+    display: none;
+}
+
+.listing-header.search form.file-upload-form {
+    opacity: 0;
+}
+
+.search-container input,
+.search-container input::placeholder {
+    border: unset;
+    font-size: 28px;
+    font-family: "Tw Cen MT";
+    color: black;
+    width: 80px;
+    cursor: pointer;
+    outline: none;
+}
+
+.search-container input {
+    transition: all 1s ease;
+}
+
+
+.listing-header .search-container {
+    position: absolute;
+    right: 0;
+    width: 120px;
+    transition: all 1s ease;
+}
+
+.listing-header.search .search-container {
+    width: calc(100% - 20px);
+    margin: 0;
+    background-color: #f2faff;
+    box-shadow: 0 0 0 5px transparent
+}
+
+.listing-header.search .search-container input {
+    font-size: 50px;
+    line-height: 50px;
+    width: 100%;
+    cursor: auto;
+    background-color: transparent;
+}
+
+.listing-header.search .search-container input::placeholder {
+    color: transparent;
+}
+
+.listing-header .search-container>svg {
+    transition: all .5s ease
+}
+
+.listing-header.search .search-container>svg {
+    width: 30px;
+    height: 30px;
+}
+
+.close-search {
+    opacity: 0;
+    position: absolute;
+    transition: all 1s ease;
+    right: -30px;
+}
+
+.listing-header.search .close-search {
+    opacity: 1;
+    width: 25px;
+    height: 25px;
+    right: 10px;
+}
+
+.listing-header .close-search svg {
+    width: 25px;
+    height: 25px;
+}
+
+button.favorites-toggler {
+    background: white;
+    margin-left: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #00000030;
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    transition: all .5s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.listing-sorting {
+    display: inline-block;
+}
+
+button.favorites-toggler img {
+    width: 25px;
+}

@@ -1,0 +1,71 @@
+.login-page h1 {
+    z-index: 2;
+    font-weight: normal;
+    color: white;
+    font-size: 130px;
+    line-height: 100px;
+    margin: 0;
+    position: absolute;
+    left: 5vh;
+    top: calc(50vh - 100px);
+}
+
+h2 {
+    font-weight: normal;
+    margin: 0;
+    font-size: 70px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    transition: opacity .5s ease-in;
+    /* animation: bounceUpAndDown 5s infinite; */
+}
+
+h1.hidden {
+    opacity: -1;
+}
+
+.form-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+
+
+
+@keyframes bounceUpAndDown {
+    0% {
+        top: calc(50vh - 100px);
+    }
+
+    50% {
+        top: calc(50vh - 120px);
+    }
+
+    100% {
+        top: calc(50vh - 100px);
+    }
+}
+
+@keyframes shakeForm {
+    0% {
+        right: 5vw;
+    }
+
+    33% {
+        right: calc(5vw - 10px);
+    }
+
+    66% {
+        right: calc(5vw + 10px);
+    }
+
+    100% {
+        right: 5vw;
+    }
+}

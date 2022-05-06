@@ -1,0 +1,47 @@
+.no-files span {
+    color: #f2faff;
+    font-size: 50px;
+    margin-bottom: 30px;
+}
+
+.no-files {
+    width: 100%;
+    background: #00a8ff73;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 260px);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.no-files .upload-icon {
+    border: 12px solid #f2faff;
+    padding: 50px 70px 90px 70px;
+    border-radius: 50%;
+    transition: padding .5s ease;
+    animation: uploadSvgUpAndDown 3s infinite;
+}
+
+.no-files .upload-icon svg {
+    width: 250px;
+    height: auto;
+}
+
+
+
+@keyframes uploadSvgUpAndDown {
+    0% {
+        padding: 80px 70px 60px 70px;
+    }
+
+    50% {
+        padding: 60px 70px 80px 70px;
+    }
+
+    100% {
+        padding: 80px 70px 60px 70px;
+    }
+}

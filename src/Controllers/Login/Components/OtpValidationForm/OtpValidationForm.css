@@ -1,0 +1,101 @@
+h1.opt-validation-h1.initial {
+    opacity: 0;
+    transition: opacity 0s ease;
+}
+
+h1.opt-validation-h1 {
+    /* line-height: 150px; */
+    /* top: calc(50vh - 125px); */
+    transition: opacity 1s ease;
+}
+
+.otp-validation.active {
+    opacity: 1;
+    animation: showOtpValidationForm 1.2s forwards;
+}
+
+.opt-validation-form {
+    background: white;
+    z-index: 2;
+    width: calc(30vw - 100px);
+    right: 5vw;
+    border-radius: 5px;
+    padding: 50px;
+    position: absolute;
+    transition: top 0.7s ease;
+    opacity: 1;
+}
+
+.opt-validation-form.initial {
+    opacity: 0;
+    top: -100vh !important;
+}
+
+.opt-validation-form.active {
+    opacity: 1;
+    animation: showOtpValidationForm 1.2s forwards;
+}
+
+.opt-validation-form>span {
+    font-size: 30px;
+    line-height: 25px;
+    color: #c7c7c7;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.pin-number-fields {
+    display: flex;
+    align-items: center;
+}
+
+.pin-number-fields>.form-field {
+    margin-right: 20px;
+}
+
+.pin-number-fields>.form-field:last-child {
+    margin-right: 0;
+}
+
+.opt-validation-form.hidden {
+    animation: hideOtpValidationForm 1.2s forwards;
+}
+
+.opt-validation-form.invalid {
+    animation: shakeForm .3s;
+}
+
+.opt-validation-form>span.errors {
+    font-size: 20px;
+    color: white;
+    font-size: 25px;
+    line-height: 25px;
+}
+
+@keyframes showOtpValidationForm {
+    0% {
+        top: -100vh;
+    }
+
+    50% {
+        top: -100vh;
+    }
+
+    100% {
+        top: calc(50vh - var(--otpValidationFormTop));
+    }
+}
+
+@keyframes hideOtpValidationForm {
+    0% {
+        top: calc(50vh - var(--otpValidationFormTop));
+    }
+
+    20% {
+        top: calc(50vh - calc(var(--otpValidationFormTop) + 50px));
+    }
+
+    100% {
+        top: 150vh;
+    }
+}

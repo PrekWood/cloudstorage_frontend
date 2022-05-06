@@ -1,0 +1,115 @@
+.warning-message-filer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #00000029;
+    opacity: 0;
+    transition: opacity .5s ease;
+    height: 0;
+    z-index: 10;
+}
+
+.warning-message-filer.active {
+    opacity: 1;
+    height: 100vh;
+}
+
+.warning-message {
+    position: fixed;
+    width: 40vw;
+    top: -50vh;
+    left: 30vw;
+    z-index: 20;
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    transition: top .5s ease
+}
+
+
+.warning-message.active {
+    top: 25px;
+}
+
+.warning-info-container {
+    display: flex;
+}
+
+.warning-info-container img {
+    padding: 30px;
+}
+
+.waring-info h3 {
+    margin: 0 0 20px 0;
+    font-size: 50px;
+    font-weight: normal;
+}
+
+.waring-info {
+    margin-left: 20px;
+}
+
+span.waring-desc {
+    font-size: 25px;
+    color: #DBDBDB;
+}
+
+.warining-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.warining-buttons>button {
+    width: calc(100% - 10px);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    box-shadow: 0 0 5px #00000021;
+    border-radius: 10px;
+    font-size: 25px;
+}
+
+.warining-buttons>button svg {
+    margin-right: 15px;
+    height: 20px;
+    width: 20px;
+}
+
+.warining-buttons button:first-child {
+    margin-right: 10px;
+}
+
+.warining-buttons button:last-child {
+    margin-left: 10px;
+}
+
+.warining-buttons button.delete {
+    background: #FF5E5E;
+}
+
+.warining-buttons button.delete span {
+    color: white;
+}
+
+button.warning-close svg {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+button.warning-close {
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid #dfdfdf;
+    margin: 0;
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}

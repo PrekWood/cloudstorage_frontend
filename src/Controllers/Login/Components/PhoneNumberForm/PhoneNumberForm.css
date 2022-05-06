@@ -1,0 +1,134 @@
+h1.phone-number-h1.initial {
+    opacity: 0;
+    transition: opacity 0s ease;
+}
+
+.phone-number-h1 {
+    transition: opacity 1s ease;
+}
+
+.phone-number-form {
+    background: white;
+    z-index: 2;
+    width: calc(30vw - 100px);
+    right: 5vw;
+    border-radius: 5px;
+    padding: 50px;
+    position: absolute;
+    transition: top 0.7s ease;
+    opacity: 1;
+}
+
+.phone-number-form .loged-in-user {
+    min-height: 90px;
+}
+
+.phone-number-form.hidden {
+    animation: hidePhoneNumberForm 1.2s forwards;
+}
+
+.phone-number-form.invalid {
+    animation: shakeForm .3s;
+}
+
+.phone-number-form.initial {
+    opacity: 0;
+    top: -100vh !important;
+}
+
+.phone-number-form.active {
+    opacity: 1;
+    animation: showPhoneNumberForm 1.2s forwards;
+}
+
+.phone-number-form.active {
+    opacity: 1;
+    animation: showPhoneNumberForm 1.2s forwards;
+}
+
+.phone-number-form>span {
+    font-size: 30px;
+    line-height: 25px;
+    color: #c7c7c7;
+    margin-bottom: 25px;
+    display: block;
+}
+
+.phone-number-container {
+    display: flex;
+    align-items: center;
+}
+
+.country-code-selector-container {
+    margin-right: 10px;
+    margin-bottom: 30px;
+}
+
+input#otp_phone_number {
+    font-family: "Tw Cen MT";
+}
+
+.loged-in-user {
+    display: flex;
+    margin-bottom: 30px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 16px;
+    align-items: center;
+}
+
+.user-info {
+    margin-left: 20px;
+    font-size: 25px;
+}
+
+span.user-name {
+    display: block;
+    font-size: 32px;
+}
+
+span.user-email {
+    font-size: 25px;
+    display: block;
+    color: #949494;
+}
+
+a.user-logout {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+img.user-icon {
+    width: 15%;
+    height: 15%;
+}
+
+
+@keyframes showPhoneNumberForm {
+    0% {
+        top: -100vh;
+    }
+
+    50% {
+        top: -100vh;
+    }
+
+    100% {
+        top: calc(50vh - var(--phoneNumberFormTop));
+    }
+}
+
+@keyframes hidePhoneNumberForm {
+    0% {
+        top: calc(50vh - var(--phoneNumberFormTop));
+    }
+
+    20% {
+        top: calc(50vh - calc(var(--phoneNumberFormTop) + 50px));
+    }
+
+    100% {
+        top: 150vh;
+    }
+}
