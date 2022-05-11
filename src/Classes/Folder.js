@@ -2,6 +2,8 @@ import Model from "./Model";
 import axios from "axios";
 import User from "./User";
 import Validate from "./Validate";
+import FileManager from "./FileManager";
+import DigitalSignature from "./DigitalSignature";
 
 export default class Folder extends Model {
     constructor() {
@@ -131,6 +133,31 @@ export default class Folder extends Model {
             url: `${window.API_URL}/folder/${this.id}/`,
             headers: this.getHeaders(authToken),
         }).then(function (response) {
+            successMethod(response)
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
+    download(successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        const foler = this;
+        axios({
+            method: 'get',
+            url: `${window.API_URL}/folder/${this.id}/download`,
+            headers: this.getHeaders(authToken),
+        }).then(function (response) {
+            DigitalSignature.validate(
+                response.data,
+                (validationResponse) => {
+                    const fileBytes = validationResponse.data.fileBytes;
+                    const fileBlob = FileManager.createBlobFromFileBytes(fileBytes);
+                    FileManager.downloadBlob(fileBlob, foler.name+".zip");
+                    successMethod();
+                },
+                errorMethod
+            )
             successMethod(response)
         }).catch(function (error) {
             errorMethod(error);

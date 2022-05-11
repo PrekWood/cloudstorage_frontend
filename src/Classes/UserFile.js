@@ -5,6 +5,7 @@ import Validate from "./Validate";
 import FileManager from "./FileManager";
 import SortingPreferences from "./SortingPreferences";
 import Folder from "./Folder";
+import DigitalSignature from "./DigitalSignature";
 
 export default class UserFile extends Model {
 
@@ -86,26 +87,6 @@ export default class UserFile extends Model {
         });
     }
 
-    static validateDigitalSignature(file, downloadResponse, successMethod, errorMethod) {
-        console.log("validateDigitalSignature")
-        const loggedInUser = User.loadUserFromLocalStorage();
-        const authToken = loggedInUser.token;
-        axios({
-            method: 'post',
-            url: `${window.API_URL}/file/${file.id}/validate-signature`,
-            headers: file.getHeaders(authToken),
-            data: {
-
-                digitalSignature: downloadResponse.digitalSignature,
-                file: FileManager.base64ToHex(downloadResponse.file),
-            }
-        }).then(function (response) {
-            successMethod(response);
-        }).catch(function (error) {
-            errorMethod(error);
-        });
-    }
-
     download(successMethod, errorMethod) {
         const loggedInUser = User.loadUserFromLocalStorage();
         const authToken = loggedInUser.token;
@@ -115,8 +96,7 @@ export default class UserFile extends Model {
             url: `${window.API_URL}/file/${this.id}`,
             headers: this.getHeaders(authToken),
         }).then(function (response) {
-            UserFile.validateDigitalSignature(
-                file,
+            DigitalSignature.validate(
                 response.data,
                 (validationResponse) => {
                     const fileBytes = validationResponse.data.fileBytes;
@@ -125,7 +105,7 @@ export default class UserFile extends Model {
                     successMethod();
                 },
                 errorMethod
-            );
+            )
         }).catch(function (error) {
             errorMethod(error);
         });

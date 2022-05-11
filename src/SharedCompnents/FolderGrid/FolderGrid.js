@@ -40,7 +40,7 @@ export default function FolderGrid(props) {
     // Actions
     function downloadFolder() {
         setLoadingAnimationState(true)
-        /*file.download(
+        folder.download(
             () => {
                 setLoadingAnimationState(false)
             },
@@ -52,7 +52,7 @@ export default function FolderGrid(props) {
                     window.displayError("Something went wrong. Please try again later");
                 }
             }
-        );*/
+        );
     }
 
     function deleteFolder() {
