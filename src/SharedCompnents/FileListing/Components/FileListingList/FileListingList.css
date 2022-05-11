@@ -1,0 +1,67 @@
+.file-list-item.go-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 40px);
+    cursor: pointer;
+}
+
+
+.file-list-item.go-back .file-icon {
+    width: max-content;
+    max-height: 45px;
+    width: 45px;
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+.file-list-item.go-back .file-icon svg {
+    width: 45px;
+    height: 45px;
+}
+
+.file-list-item.go-back span {
+    color: black;
+    text-align: center;
+    width: max-content;
+}
+
+.file-list-item.new-folder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 40px);
+    cursor: pointer;
+    background: #bae2ff;
+}
+
+
+.file-list-item.new-folder .file-icon {
+    width: max-content;
+    max-height: 45px;
+    width: 45px;
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+.file-list-item.new-folder .file-icon svg {
+    width: 45px;
+    height: 45px;
+}
+
+.file-list-item.new-folder span {
+    text-align: center;
+    width: max-content;
+    color: white;
+    font-size: 22px;
+}
+.file-list-item.new-folder .file-icon {
+    border: 3px solid white;
+    padding: 5px;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+}
+.file-list-item.go-back svg {
+    height: 45px;
+}

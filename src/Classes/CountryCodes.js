@@ -3,7 +3,9 @@ import Model from "./Model";
 
 export default class CountryCodes {
 
+
     static getAllCountryCodes(successMethod, errorMethod) {
+
         axios({
             method: 'get',
             url: `${window.API_URL}/country-codes`,

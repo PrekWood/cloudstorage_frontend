@@ -99,7 +99,7 @@ function RegisterForm(props) {
         let newUser = new User();
         newUser.email = response.registerResponse.data.email;
         newUser.firstName = response.registerResponse.data.firstName;
-        newUser.idUser = response.registerResponse.data.idUser;
+        newUser.idUser = response.registerResponse.data.id;
         newUser.lastName = response.registerResponse.data.lastName;
         newUser.token = response.data.token;
         newUser.saveUserToLocalStorage();
@@ -116,6 +116,10 @@ function RegisterForm(props) {
             console.log(error);
             setRegisterFormErrors("Something went wrong please try again");
         }
+    }
+
+    function switchToLogin(){
+        props.switchToLogin(true);
     }
 
     return (
@@ -153,7 +157,7 @@ function RegisterForm(props) {
                     />
                     <SubmitButton text="Sign up" callback={signUp} />
                     <span className={`errors ${registerFormErrors == null ? "hidden" : ""}`}>{registerFormErrors}</span>
-                    <a className="form-link" onClick={props.switchToLogin}>
+                    <a className="form-link" onClick={switchToLogin}>
                         Already have an account? Log in here
                     </a>
 

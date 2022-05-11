@@ -1,6 +1,37 @@
 .file-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.file-grid.new-folder .file-icon {
+    border: 15px solid white;
+    height: 100px;
+    width: 100px;
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.file-grid.new-folder .file-icon svg {
+    width: 100px;
+    height: 100px;
+}
+
+.file-grid.new-folder span { /* text-align: center; *//* font-size: 40px; */
+    font-size: 40px;
+    text-align: center;
+    margin: 20px 0;
+    color: white;
+}
+
+.file-grid.new-folder {
+    padding: 50px 30px;
+    background: #bae2ff;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.file-grid-inner.drag-and-drop {
+    position: absolute;
 }

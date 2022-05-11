@@ -17,31 +17,31 @@ export default function SortSelector(props) {
         {
             id: 1,
             name: "",
-            orderBy: "date_add",
+            orderBy: "dateAdd",
             orderWay: "desc",
             svg: dateAddDescSvg
         },
         {
             id: 2,
             name: "",
-            orderBy: "date_add",
+            orderBy: "dateAdd",
             orderWay: "asc",
             svg: dateAddAscSvg
         },
         {
             id: 3,
             name: "",
-            orderBy: "name",
-            orderWay: "desc",
-            svg: fileNameDescSvg
+            orderBy: "fileName",
+            orderWay: "asc",
+            svg: fileNameAscSvg
         },
         {
             id: 4,
             name: "",
-            orderBy: "name",
-            orderWay: "asc",
-            svg: fileNameAscSvg
-        }
+            orderBy: "fileName",
+            orderWay: "desc",
+            svg: fileNameDescSvg
+        },
     ];
 
     function changeSorting(sortingOption) {

@@ -13,7 +13,7 @@ function PhoneNumberForm(props) {
 
     const [phoneNumberFormState, setPhoneNumberFormState] = useState("false");
     const [countryCodesList, setCountryCodesList] = useState([]);
-    const [logedInUser, setLogedInUser] = useState(null);
+    const [loggedInUser, setloggedInUser] = useState(null);
     const [showLoadingAnimation, setLoadingAnimation] = useState(false);
     const [errors, serErrors] = useState("");
     const [formData, setFormData] = useState({
@@ -53,9 +53,9 @@ function PhoneNumberForm(props) {
     function loadUserFromLocalStorage() {
         const userObj = User.loadUserFromLocalStorage();
         if (userObj.isEmpty()) {
-            setLogedInUser(null)
+            setloggedInUser(null)
         } else {
-            setLogedInUser(userObj)
+            setloggedInUser(userObj)
         }
     }
 
@@ -83,12 +83,12 @@ function PhoneNumberForm(props) {
     }
 
     function sendSms() {
-        if (logedInUser == null) {
+        if (loggedInUser == null) {
             shakeForm();
             return;
         }
 
-        const authToken = logedInUser.token;
+        const authToken = loggedInUser.token;
         const phoneNumberField = formData.otp_phone_number;
         if (
             authToken == null || authToken == "" || authToken == undefined ||
@@ -102,11 +102,11 @@ function PhoneNumberForm(props) {
 
         setLoadingAnimation(true);
 
-        logedInUser.token = authToken;
-        logedInUser.phoneNumber = phoneNumberField.value;
-        logedInUser.countryCodeId = formData.otp_country_code_id.value;
-        logedInUser.saveUserToLocalStorage();
-        logedInUser.savePhoneNumberAndSendSms(sendSmsSuccess, sendSmsError);
+        loggedInUser.token = authToken;
+        loggedInUser.phoneNumber = phoneNumberField.value;
+        loggedInUser.countryCodeId = formData.otp_country_code_id.value;
+        loggedInUser.saveUserToLocalStorage();
+        loggedInUser.savePhoneNumberAndSendSms(sendSmsSuccess, sendSmsError);
     }
 
     function sendSmsSuccess() {
@@ -126,8 +126,8 @@ function PhoneNumberForm(props) {
     function userLogout() {
         props.switchToRegister(true, false);
         setTimeout(() => {
-            localStorage.setItem("logedInUser", null);
-            setLogedInUser(null);
+            localStorage.setItem("loggedInUser", null);
+            setloggedInUser(null);
         }, 1000)
     }
 
@@ -138,7 +138,7 @@ function PhoneNumberForm(props) {
                 <div className={`phone-number-form ${phoneNumberFormState}`}>
                     <h2>Phone Number</h2>
                     <span>In order to complete your account we need to verify your telephone.</span>
-                    <UserMiniature user={logedInUser} logout={userLogout} />
+                    <UserMiniature user={loggedInUser} logout={userLogout} />
                     <div className="phone-number-container">
                         <CountryCodeSelector
                             countryCodesList={countryCodesList}
@@ -154,10 +154,9 @@ function PhoneNumberForm(props) {
                     <SubmitButton text="Send SMS" callback={sendSms} />
                     <span className={`errors ${errors == "" ? "hidden" : ""}`}>{errors}</span>
                     <LoadingAnimation state={showLoadingAnimation} />
-
-                    {/* <a className="form-link" onClick={props.switchToOtpValidation}>
-                            test otp validation
-                        </a> */}
+                    <a className="form-link" onClick={props.switchToLogin}>
+                        Already have an account? Log in here
+                    </a>
                 </div>
             </div>
         </>

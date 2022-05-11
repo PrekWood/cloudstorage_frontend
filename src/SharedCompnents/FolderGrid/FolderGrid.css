@@ -1,0 +1,28 @@
+img.folder-icon {
+    max-width: 55%;
+    margin: auto;
+    display: block;
+}
+
+
+.file-grid.folder {
+    padding: 0;
+}
+
+.file-grid.folder > div.folder-container {
+    padding: 50px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 100px);
+}
+
+.file-grid.go-back{
+    padding: 50px 30px;
+}
+.file-grid.go-back > span {
+    font-size: 35px;
+    text-align: center;
+    margin: 40px 0 20px;
+}

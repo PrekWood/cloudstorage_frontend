@@ -13,15 +13,13 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 35px;
-    width: 50px;
+    padding: 20px 25px;
+    width: 70px;
     cursor: pointer;
     position: relative;
     text-decoration: none;
     flex-direction: column;
 }
-
-
 
 .nav-item.logo-container {
     padding: 35px;
@@ -65,6 +63,7 @@ a.nav-item.active .nav-text {
     width: 35px;
     height: 35px;
     fill: #DBDBDB;
+    stroke:#DBDBDB;
 }
 
 .nav-item {
@@ -73,4 +72,5 @@ a.nav-item.active .nav-text {
 
 a.nav-item.active svg {
     fill: #007CFF;
+    stroke:#007CFF;
 }

@@ -1,5 +1,5 @@
 .file-list-item {
-    width: 100%;
+    width: calc(100% - 40px);
     display: flex;
     align-items: center;
     padding: 15px 0;
@@ -11,10 +11,11 @@
 .file-list.list {
     background: white;
     border-radius: 5px;
-    margin: 20px 0;
+    margin: 40px 0 20px;
     box-shadow: 0 0 5px #0000000f;
+    display: flex;
+    flex-direction: column;
 }
-
 
 .file-list-img {
     width: 10%;
@@ -36,7 +37,6 @@
 .file-list-name {
     width: 30%;
 }
-
 
 
 .file-list-type {
@@ -134,4 +134,43 @@ a.file-dropdown-links span {
     right: 0;
     box-shadow: 0 0 5px #00000029;
     border-radius: 0 0 5px 5px;
+}
+
+.file-list-item textarea {
+    margin: 0;
+    font-size: 23px;
+    text-align: left;
+}
+
+
+.file-list-item form.rename-form textarea.file-name {
+    padding: 2px;
+    width: calc(100% - 8px);
+    resize:none;
+}
+
+
+
+.file-list-item form.rename-form button svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+form.rename-form.open span.rename-file-extention {
+    display: none;
+}
+
+.file-list-item form.rename-form.open button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    right: 3px;
+    left: unset;
+    bottom: 7px;
+    top: 2px;
+    font-size: 18px;
+    height: auto;
+    padding: 0 10px;
 }

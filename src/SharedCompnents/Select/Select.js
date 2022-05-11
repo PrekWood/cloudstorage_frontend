@@ -56,7 +56,7 @@ export default function Select(props) {
                         <select className="hidden-select"
                             onChange={() => { }}
                             id={props.id}
-                            value={options}
+                            value={selectedOption.id}
                         >
                             {options.map((option) => (
                                 <option

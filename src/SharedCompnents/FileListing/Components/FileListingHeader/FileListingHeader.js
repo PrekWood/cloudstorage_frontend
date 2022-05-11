@@ -12,6 +12,8 @@ import starSvg from "./imgs/star.svg";
 import starSvgFull from "./imgs/star-full.svg";
 import SortingPreferences from '../../../../Classes/SortingPreferences';
 import userEvent from '@testing-library/user-event';
+import FolderGrid from "../../../FolderGrid/FolderGrid";
+import Folder from "../../../../Classes/Folder";
 
 
 function FileListingHeader(props) {
@@ -20,6 +22,25 @@ function FileListingHeader(props) {
     // Hader state
     const [headerState, setHeaderState] = useState("initial");
     const [favoritesActive, setFavoritesActive] = useState(false);
+
+
+    function navigateToFolder(folder){
+        Folder.getFolderDetails(
+            folder.id,
+            (response)=>{
+                const folderToRedirect = Folder.castToFolder(response.data);
+                folderToRedirect.setCurrentFolderInLocalStorage();
+                props.reHydrateListing();
+            },
+            (request)=>{
+                if (!Validate.isEmpty(request.response)) {
+                    window.displayError(request.response.data.error);
+                } else {
+                    window.displayError("Something went wrong. Please try again later");
+                }
+            },
+        )
+    }
 
     return (
         <>
@@ -40,10 +61,18 @@ function FileListingHeader(props) {
                     )}
                 </div>
             </div>
-            {(Validate.isArrayEmpty(props.files) && props.sortingPreferences.isEmpty()) ? "" : (
+            {/*{(Validate.isArrayEmpty(props.files) && props.sortingPreferences.isEmpty()) ? "" : (*/}
                 <div className='listing-sorting-and-layout-container'>
-                    <div>
-                        <SortSelector reHydrateListing={props.reHydrateListing} />
+                    <div className='sorting-and-favorites'>
+
+                        {(Validate.isNotEmpty(props.variation) && props.variation === "recent") ?
+                            ""
+                            :
+                            <div className="sort-selector">
+                                <SortSelector reHydrateListing={props.reHydrateListing} />
+                            </div>
+                        }
+
                         {/* FavoritesToggler */}
                         <button
                             className="favorites-toggler"
@@ -58,10 +87,32 @@ function FileListingHeader(props) {
                         >
                             <img src={favoritesActive ? starSvgFull : starSvg} />
                         </button>
+
+                        {(Validate.isNotEmpty(props.variation) && props.variation === "recent") ?
+                            <span className="listing-name">Recent files</span> : ""
+                        }
+                        {(Validate.isNotEmpty(props.variation) && props.variation === "all-files") ?
+                            <span className="listing-breadcrumb">
+                                {props.currentFolder == null || props.currentFolder.isEmpty() ? "Home" :
+                                    Validate.isArrayEmpty(props.currentFolder.breadcrumb) ? "" :
+                                        (
+                                            props.currentFolder.breadcrumb.map((breadcrumbItem)=>(
+                                                <span
+                                                    key={`breadcrumb_${breadcrumbItem.id}`}
+                                                    className="breadcrumb-item"
+                                                    onClick={()=>{navigateToFolder(breadcrumbItem)}}
+                                                >{breadcrumbItem.name}</span>
+                                            ))
+                                        )
+                                }
+                            </span> : ""
+                        }
                     </div>
+
+
                     <LayoutSelector setLayout={props.setLayout} />
                 </div>
-            )}
+            {/*)}*/}
 
         </>
     );

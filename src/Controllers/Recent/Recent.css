@@ -6,3 +6,8 @@ body {
     margin-left: 120px;
     padding: 60px;
 }
+
+span.listing-name {
+    font-size: 27px;
+    margin-left: 20px;
+}

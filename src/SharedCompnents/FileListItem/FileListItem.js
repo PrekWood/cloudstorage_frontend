@@ -4,7 +4,6 @@ import UserFile from "./../../Classes/UserFile";
 import Validate from "./../../Classes/Validate";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 
-
 // SVG
 import { ReactComponent as StarSvg } from "./imgs/star.svg";
 import { ReactComponent as StarSvgActive } from "./imgs/star-full.svg";
@@ -14,6 +13,8 @@ import { ReactComponent as ShareSvg } from "./imgs/share.svg";
 import { ReactComponent as DeleteSvg } from "./imgs/delete.svg";
 import { ReactComponent as PreviewSvg } from "./imgs/preview.svg";
 import { ReactComponent as DropDownIcon } from "./imgs/arrow_down.svg";
+import {ReactComponent as RenameSvg} from "./imgs/edit.svg";
+import {ReactComponent as SaveSvg} from "./imgs/save.svg";
 
 export default function FileListItem(props) {
 
@@ -91,6 +92,56 @@ export default function FileListItem(props) {
 
     }
 
+    // Renaming state
+    const [renameState, setRenameState] = useState(false);
+    const [renameValue, setRenameValue] = useState(null);
+    useEffect(() => {
+        if (file != null) {
+            setRenameValue(file.name);
+        }
+    }, [file]);
+    function openRenameForm() {
+        closeFileMenu();
+        let fileName = file.name;
+        let extension = file.extension;
+        if(fileName.substring(fileName.length-extension.length-1, fileName.length) === "."+extension){
+            const fileNameWithoutExt = fileName.substring(0,fileName.length-extension.length-1);
+            setRenameValue(fileNameWithoutExt)
+            document.getElementById(`rename_file_textarea_list_${file.id}`).value = fileNameWithoutExt;
+
+        }
+        setRenameState(true)
+    }
+
+    function renameFile(e){
+        e.preventDefault();
+        const newName = e.target[0].value;
+        if(Validate.isEmpty(newName)){
+            document.getElementById(`rename_file_textarea_list_${file.id}`).classList.add("invalid");
+            return;
+        }
+        setLoadingAnimationState(true)
+        file.renameTo(
+            newName,
+            (response)=>{
+                setLoadingAnimationState(false);
+                setRenameValue(response.data.name)
+                document.getElementById(`rename_file_textarea_list_${file.id}`).classList.remove("invalid");
+                document.getElementById(`rename_file_textarea_list_${file.id}`).value = response.data.name;
+                setRenameState(false)
+                props.reHydrateListing()
+            },
+            (request)=>{
+                setLoadingAnimationState(false);
+                if (!Validate.isEmpty(request.response)) {
+                    window.displayError(request.response.data.error);
+                } else {
+                    window.displayError("Something went wrong. Please try again later");
+                }
+            }
+        );
+    }
+
     return <>
         {file == null ? "" : (
             <div className='file-list-item'>
@@ -104,7 +155,21 @@ export default function FileListItem(props) {
                         <span className='file-extention'>{file.extension}</span>
                     }
                 </div>
-                <span className='file-list-name'>{file.name}</span>
+                <form className={`rename-form file-list-name ${renameState ? "open" : "closed"}`} onSubmit={renameFile}>
+                    <textarea
+                        rows="1"
+                        className='file-name'
+                        id={`rename_file_textarea_list_${file.id}`}
+                        disabled={!renameState}
+                        defaultValue={renameValue==null?"":renameValue}
+                    />
+                    <span className="rename-file-extention">.{file.extension}</span>
+                    <button type="submit">
+                        <SaveSvg/>
+                        Save
+                    </button>
+                </form>
+                {/*<span className='file-list-name'>{file.name}</span>*/}
                 <span className='file-list-type'>{file.extension}</span>
                 <span className='file-list-size file-size'>{file.size}</span>
                 <span className='file-list-date'>{file.dateAdd}</span>
@@ -120,12 +185,12 @@ export default function FileListItem(props) {
                     {dropdownState ? (
                         <div className="file-dropdown-menu">
                             <a className="file-dropdown-links" onClick={downloadFile}>
-                                <DownloadSvg />
-                                <span>Download</span>
-                            </a>
-                            <a className="file-dropdown-links" onClick={downloadFile}>
                                 <ShareSvg />
                                 <span>Share</span>
+                            </a>
+                            <a className="file-dropdown-links" onClick={openRenameForm}>
+                                <RenameSvg/>
+                                <span>Rename</span>
                             </a>
                             <a className="file-dropdown-links" onClick={downloadFile}>
                                 <PreviewSvg />

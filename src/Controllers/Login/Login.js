@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import './Login.css';
 import LoginBackground from './Components/LoginBackground/LoginBackground';
 import LoginLogo from './Components/LoginLogo/LoginLogo';
@@ -30,7 +30,10 @@ function Login() {
         setRegisterActive(true);
     }
 
-    function switchToLogin() {
+    function switchToLogin(hidePhoneNumber = false) {
+        if (hidePhoneNumber) {
+            setPhoneNumberActive(false);
+        }
         setRegisterActive(false);
         setLoginActive(true);
     }
@@ -40,6 +43,7 @@ function Login() {
         setLoginActive(false);
         setPhoneNumberActive(true);
     }
+
     function switchToOtpValidation() {
         console.log("login switchToOtpValidation")
         setRegisterActive(false);
@@ -59,6 +63,7 @@ function Login() {
         setLoadingCountryCodes(false);
         setCountryCodesList(response.data);
     }
+
     function getCountryCodesFail(error) {
         setLoadingCountryCodes(false);
         alert("something went wrong please try again")
@@ -67,12 +72,28 @@ function Login() {
     return (
         <>
             <div className="login-page">
-                <LoginBackground />
-                <LoginLogo />
-                <LoginForm isActive={isLoginActive} switchToRegister={switchToRegister} />
-                <RegisterForm isActive={isRegisterActive} switchToLogin={switchToLogin} switchToPhoneNumberForm={switchToPhoneNumberForm} />
-                <PhoneNumberForm isActive={isPhoneNumberActive} switchToRegister={switchToRegister} switchToOtpValidation={switchToOtpValidation} countryCodesList={countryCodesList} />
-                <OtpValidationForm isActive={isOtpValidationFormActive} switchToRegister={switchToRegister} />
+                <LoginBackground/>
+                <LoginLogo/>
+                <LoginForm
+                    isActive={isLoginActive}
+                    switchToRegister={switchToRegister}
+                />
+                <RegisterForm
+                    isActive={isRegisterActive}
+                    switchToLogin={switchToLogin}
+                    switchToPhoneNumberForm={switchToPhoneNumberForm}
+                />
+                <PhoneNumberForm
+                    isActive={isPhoneNumberActive}
+                    switchToRegister={switchToRegister}
+                    switchToOtpValidation={switchToOtpValidation}
+                    switchToLogin={switchToLogin}
+                    countryCodesList={countryCodesList}
+                />
+                <OtpValidationForm
+                    isActive={isOtpValidationFormActive}
+                    switchToRegister={switchToRegister}
+                />
                 <div className='extra-css'></div>
             </div>
         </>

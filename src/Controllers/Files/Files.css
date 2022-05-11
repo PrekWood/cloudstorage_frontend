@@ -1,0 +1,13 @@
+body {
+    background: #F2FAFF
+}
+
+.content-container {
+    margin-left: 120px;
+    padding: 60px;
+}
+
+span.listing-breadcrumb {
+    font-size: 27px;
+    margin-left: 20px;
+}

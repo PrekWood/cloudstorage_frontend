@@ -12,7 +12,7 @@ function OtpValidationForm(props) {
 
     const [otpValidationFormState, setOtpValidationFormState] = useState("initial");
     const [showLoadingAnimation, setLoadingAnimation] = useState(false);
-    const [logedInUser, setLogedInUser] = useState(null);
+    const [loggedInUser, setloggedInUser] = useState(null);
     const [errors, setErrors] = useState("");
 
     // const [registerFormErrors, setRegisterFormErrors] = useState(null);
@@ -49,15 +49,15 @@ function OtpValidationForm(props) {
     function loadUserFromLocalStorage() {
         const userObj = User.loadUserFromLocalStorage();
         if (userObj.isEmpty()) {
-            setLogedInUser(null)
+            setloggedInUser(null)
         } else {
-            setLogedInUser(userObj)
+            setloggedInUser(userObj)
         }
     }
 
     function userLogout() {
-        localStorage.setItem("logedInUser", null);
-        setLogedInUser(null);
+        localStorage.setItem("loggedInUser", null);
+        setloggedInUser(null);
         props.switchToRegister(false, true);
     }
 
@@ -109,7 +109,7 @@ function OtpValidationForm(props) {
     function validateOtp(event) {
         event.preventDefault();
 
-        if (!validateFields() || logedInUser == null) {
+        if (!validateFields() || loggedInUser == null) {
             shakeForm();
         }
 
@@ -121,7 +121,7 @@ function OtpValidationForm(props) {
             }
         }
 
-        logedInUser.validateOtp(otpCode, successValidateOtp, errorValidateOtp);
+        loggedInUser.validateOtp(otpCode, successValidateOtp, errorValidateOtp);
     }
 
     function switchToRegister() {
@@ -136,7 +136,7 @@ function OtpValidationForm(props) {
 
     function resendSms() {
         setLoadingAnimation(true);
-        logedInUser.resendSms(successResend, failResend);
+        loggedInUser.resendSms(successResend, failResend);
     }
 
     function successValidateOtp() {
@@ -167,7 +167,7 @@ function OtpValidationForm(props) {
                 <div className={`opt-validation-form ${otpValidationFormState}`}>
                     <h2>PIN Validation</h2>
                     <span>Please input the PIN number that you received on your smartphone</span>
-                    <UserMiniature user={logedInUser} logout={userLogout} />
+                    <UserMiniature user={loggedInUser} logout={userLogout} />
                     <form onSubmit={validateOtp}>
                         <div className="pin-number-fields">
                             <InputField

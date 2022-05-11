@@ -58,6 +58,11 @@ span#logo_text {
     justify-content: space-between;
 }
 
+.sorting-and-favorites {
+    display: flex;
+    align-items: center;
+}
+
 .listing-header.search span#logo_text {
     opacity: 0;
 }
@@ -123,11 +128,11 @@ button#fileUploadSubmitButton {
     color: transparent;
 }
 
-.listing-header .search-container>svg {
+.listing-header .search-container > svg {
     transition: all .5s ease
 }
 
-.listing-header.search .search-container>svg {
+.listing-header.search .search-container > svg {
     width: 30px;
     height: 30px;
 }
@@ -153,11 +158,9 @@ button#fileUploadSubmitButton {
 
 button.favorites-toggler {
     background: white;
-    margin-left: 15px;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 0 5px #00000030;
-    position: absolute;
     width: 55px;
     height: 55px;
     transition: all .5s ease;
@@ -166,10 +169,37 @@ button.favorites-toggler {
     justify-content: center;
 }
 
-.listing-sorting {
-    display: inline-block;
+.sort-selector {
+    margin-right: 15px;
 }
 
 button.favorites-toggler img {
     width: 25px;
+}
+
+.listing-breadcrumb .breadcrumb-item {
+    margin-right: 30px;
+    position: relative;
+}
+
+.listing-breadcrumb {
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+}
+
+.listing-breadcrumb .breadcrumb-item::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #b9b9b9;
+    border-right: 2px solid #b9b9b9;
+    position: absolute;
+    top: calc(50% - 5px);
+    right: -15px;
+    transform: rotate(45deg);
+}
+
+.listing-breadcrumb .breadcrumb-item:first-child::after {
+    display: none;
 }

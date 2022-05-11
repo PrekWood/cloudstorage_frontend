@@ -1,0 +1,4 @@
+.file-listing.empty .file-list,
+.file-listing.empty .listing-sorting-and-layout-container{
+    display: none;
+}

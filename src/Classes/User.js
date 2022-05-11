@@ -2,6 +2,7 @@ import axios from "axios";
 import Validate from "./Validate";
 import Model from "./Model";
 import SortingPreferences from "./SortingPreferences";
+import Folder from "./Folder";
 
 export default class User extends Model {
 
@@ -30,21 +31,8 @@ export default class User extends Model {
         return userObj;
     }
 
-    // getHeaders(authToken = null) {
-    //     let headers = {
-    //         "Cache-Control": "no-cache",
-    //         "Accept-Language": "en",
-    //         "Content-Type": 'application/json',
-    //         "Access-Control-Allow-Origin": '*',
-    //     };
-    //     if (authToken != null) {
-    //         headers["Authorization"] = `Bearer ${authToken}`;
-    //     }
-    //     return headers;
-    // }
 
     login(successMethod, errorMethod, registerResponse = null) {
-        console.log("user.login");
         axios({
             method: 'post',
             url: `${window.API_URL}/login?username=${this.email}&password=${this.password}`,
@@ -61,13 +49,12 @@ export default class User extends Model {
     }
 
     register(successMethod, errorMethod) {
-        console.log("user.register");
         const thisUser = this;
 
         // First Register
         axios({
             method: 'post',
-            url: `${window.API_URL}/registration`,
+            url: `${window.API_URL}/user`,
             headers: this.getHeaders(),
             data: {
                 firstName: this.firstName,
@@ -79,7 +66,6 @@ export default class User extends Model {
         }).then(function (response) {
             // Then Login
             thisUser.login(successMethod, errorMethod, response)
-
         }).catch(function (error) {
             console.log(error);
             errorMethod(error);
@@ -107,27 +93,25 @@ export default class User extends Model {
     }
 
     static loadUserFromLocalStorage() {
-        let logedInUser = localStorage.getItem("logedInUser");
-        if (logedInUser == null || logedInUser == "" || logedInUser == undefined) {
-            console.log("localStorage empty");
+        let loggedInUser = localStorage.getItem("loggedInUser");
+        if (loggedInUser == null || loggedInUser == "" || loggedInUser == undefined) {
             return new User();
         }
 
-        let logedInUserJson = null;
+        let loggedInUserJson = null;
         try {
-            logedInUserJson = JSON.parse(logedInUser);
+            loggedInUserJson = JSON.parse(loggedInUser);
         } catch (e) {
-            console.log("cannot parse");
             return new User();
         }
 
-        if (logedInUserJson == null) {
+        if (loggedInUserJson == null) {
             return new User();
         }
 
         const userToReturn = new User();
-        for (const property in logedInUserJson) {
-            userToReturn[property] = logedInUserJson[property];
+        for (const property in loggedInUserJson) {
+            userToReturn[property] = loggedInUserJson[property];
         }
         return userToReturn;
     }
@@ -138,16 +122,14 @@ export default class User extends Model {
             url: `${window.API_URL}/user/`,
             headers: this.getHeaders(this.token),
         }).then(function (response) {
-            console.log("getUserDetails success");
             successMethod(response);
         }).catch(function (error) {
-            console.log("getUserDetails error");
             errorMethod(error);
         });
     }
 
     saveUserToLocalStorage() {
-        localStorage.setItem("logedInUser", JSON.stringify(this));
+        localStorage.setItem("loggedInUser", JSON.stringify(this));
     }
 
 
@@ -203,8 +185,9 @@ export default class User extends Model {
         });
     }
 
-    getUserFiles(successMethod, errorMethod) {
+    getFiles(successMethod, errorMethod, isRecent=false) {
         const sortingPrefs = SortingPreferences.loadFromLoalStorage();
+        const currentFolder = Folder.loadFromLoalStorage();
         let ajaxUrl = `${window.API_URL}/files`;
         if (Validate.isNotEmpty(sortingPrefs.orderBy) && Validate.isNotEmpty(sortingPrefs.orderWay)) {
             ajaxUrl += `/${sortingPrefs.orderBy}/${sortingPrefs.orderWay}`;
@@ -215,10 +198,21 @@ export default class User extends Model {
         if (Validate.isNotEmpty(sortingPrefs.onlyFavorites) && sortingPrefs.onlyFavorites) {
             ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}onlyFavorites=true`;
         }
+        if (!isRecent) {
+            if (Validate.isNotEmpty(currentFolder) && Validate.isNotEmpty(currentFolder.id)) {
+                ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}folderId=${currentFolder.id}`;
+            }
+        }else{
+            ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}allFiles=true`;
+        }
+
         axios({
             method: 'get',
             url: ajaxUrl,
             headers: this.getHeaders(this.token),
+            data:{
+
+            }
         }).then(function (response) {
             successMethod(response);
         }).catch(function (error) {
@@ -244,4 +238,5 @@ export default class User extends Model {
             errorMethod(error);
         });
     }
+
 }

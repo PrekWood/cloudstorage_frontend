@@ -4,6 +4,7 @@ import User from "./User";
 import Validate from "./Validate";
 import FileManager from "./FileManager";
 import SortingPreferences from "./SortingPreferences";
+import Folder from "./Folder";
 
 export default class UserFile extends Model {
 
@@ -38,13 +39,14 @@ export default class UserFile extends Model {
     }
 
     uploadFile(successMethod, errorMethod) {
-        const logedInUser = User.loadUserFromLocalStorage();
-        const authToken = logedInUser.token;
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
         const formData = new FormData()
         formData.append("file", this.fileToUpload);
+        formData.append("folderId", Folder.loadFromLoalStorage().id);
 
         axios.post(
-            `${window.API_URL}/file/upload`,
+            `${window.API_URL}/file`,
             formData,
             {
                 headers: {
@@ -67,13 +69,16 @@ export default class UserFile extends Model {
             return;
         }
 
-        const logedInUser = User.loadUserFromLocalStorage();
-        const authToken = logedInUser.token;
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
 
         axios({
-            method: 'post',
-            url: `${window.API_URL}/file/${this.id}/favorite`,
+            method: 'put',
+            url: `${window.API_URL}/file/${this.id}/`,
             headers: this.getHeaders(authToken),
+            data:{
+                favorite:!this.favorite
+            }
         }).then(function (response) {
             successMethod(response);
         }).catch(function (error) {
@@ -83,8 +88,8 @@ export default class UserFile extends Model {
 
     static validateDigitalSignature(file, downloadResponse, successMethod, errorMethod) {
         console.log("validateDigitalSignature")
-        const logedInUser = User.loadUserFromLocalStorage();
-        const authToken = logedInUser.token;
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
         axios({
             method: 'post',
             url: `${window.API_URL}/file/${file.id}/validate-signature`,
@@ -102,12 +107,12 @@ export default class UserFile extends Model {
     }
 
     download(successMethod, errorMethod) {
-        const logedInUser = User.loadUserFromLocalStorage();
-        const authToken = logedInUser.token;
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
         const file = this;
         axios({
             method: 'get',
-            url: `${window.API_URL}/file/${this.id}/download`,
+            url: `${window.API_URL}/file/${this.id}`,
             headers: this.getHeaders(authToken),
         }).then(function (response) {
             UserFile.validateDigitalSignature(
@@ -128,8 +133,8 @@ export default class UserFile extends Model {
     }
 
     delete(successMethod, errorMethod) {
-        const logedInUser = User.loadUserFromLocalStorage();
-        const authToken = logedInUser.token;
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
         const file = this;
         axios({
             method: 'delete',
@@ -142,9 +147,28 @@ export default class UserFile extends Model {
         });
     }
 
+    renameTo(newName, successMethod, errorMethod) {
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        const file = this;
+        axios({
+            method: 'put',
+            url: `${window.API_URL}/file/${this.id}/`,
+            headers: this.getHeaders(authToken),
+            data:{
+                fileName:`${newName}.${file.extension}`
+            }
+        }).then(function (response) {
+            successMethod(response)
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
+
     // static search(searchQuery, successMethod, errorMethod) {
-    //     const logedInUser = User.loadUserFromLocalStorage();
-    //     const authToken = logedInUser.token;
+    //     const loggedInUser = User.loadUserFromLocalStorage();
+    //     const authToken = loggedInUser.token;
     //     let ajaxUrl = `${window.API_URL}/files`;
     //     const sortingPrefs = SortingPreferences.loadFromLoalStorage();
     //     if (Validate.isNotEmpty(sortingPrefs.orderBy) && Validate.isNotEmpty(sortingPrefs.orderWay)) {

@@ -1,12 +1,16 @@
 .file-grid {
-    width: calc(25% - 140px);
     margin: 20px 40px;
     background: white;
     border-radius: 10px;
-    padding: 50px 30px;
     box-shadow: 0 5px 10px #00000017;
     position: relative;
+    cursor: pointer;
 }
+
+.file-grid-inner{
+    padding: 50px 30px;
+}
+
 
 img.file-type-img {
     height: 45px;
@@ -40,18 +44,34 @@ span.file-extention {
     font-size: 22px;
 }
 
-span.file-name {
+
+textarea.file-name {
     font-size: 30px;
     text-align: center;
     margin: 20px 0;
     word-break: break-all;
+    border: unset;
+    width: 100%;
 }
+
+textarea.file-name:disabled {
+    background: white;
+    color: black;
+    cursor: auto;
+    resize: none;
+    overflow: hidden;
+}
+
 
 span.file-size {
     color: #DBDBDB;
     font-size: 20px;
     text-transform: uppercase;
     text-align: center;
+}
+
+form.rename-form {
+    position: relative;
 }
 
 button.file-favorites {
@@ -61,19 +81,20 @@ button.file-favorites {
     padding: 5px;
 }
 
-button.file-favorites>svg,
-button.file-menu>svg {
+button.file-favorites > svg,
+button.file-menu > svg {
     height: 18px;
     width: auto;
 }
 
-button.file-menu {
+.dropdown-container {
     position: absolute;
     right: 10px;
     top: 10px;
+}
+button.file-menu {
     padding: 5px;
 }
-
 .file-dropdown-filter {
     position: fixed;
     top: 0;
@@ -118,4 +139,81 @@ button.file-menu {
 .file-dropdown-links span {
     font-size: 20px;
     margin-left: 15px;
+}
+
+form.rename-form {
+    position: relative;
+}
+
+form.rename-form button {
+    width: 35px;
+    height: 35px;
+    background: white;
+    padding: 5px;
+    box-shadow: 0 0 5px #00000057;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 0px;
+    left: 10px;
+    display: none;
+}
+
+form.rename-form.open button {
+    display: block;
+}
+
+.rename-form.open textarea.file-name {
+    overflow: auto;
+    resize: vertical;
+    border: 2px solid #dbdbdb;
+    border-radius: 5px;
+    outline: unset;
+}
+
+.rename-form.open textarea.file-name.invalid {
+    border: 2px solid #ff9a9a;
+}
+
+span.rename-file-extention {
+    font-size: 18px;
+    position: absolute;
+    bottom: 31px;
+    right: 1px;
+    background: #ebebeb;
+    line-height: 18px;
+    padding: 5px;
+    border-radius: 5px;
+    opacity: .5;
+    display: none;
+}
+
+form.rename-form.open span.rename-file-extention {
+    display: block;
+}
+.file-grid-inner.drag-and-drop {
+    position: fixed;
+    animation: hangEffect 0.5s;
+    background:white;
+}
+
+.file-grid-inner.drag-and-drop  * {
+    pointer-events: none;
+}
+
+@keyframes hangEffect {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    33% {
+        transform: rotate(-5deg);
+    }
+
+    66% {
+        transform: rotate(+5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }

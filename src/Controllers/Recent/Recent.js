@@ -5,17 +5,14 @@ import Nav from "../../SharedCompnents/Nav/Nav";
 import FileListing from "../../SharedCompnents/FileListing/FileListing";
 import WarningMessage from "../../SharedCompnents/WarningMessage/WarningMessage";
 import User from '../../Classes/User';
-import UserFile from '../../Classes/UserFile';
-import Valitate from './../../Classes/Validate';
 import SortingPreferences from '../../Classes/SortingPreferences';
 
 function Recent() {
 
-
     // Log in if not loged in
-    const [logedInUser, setLogedInUser] = useState(null);
+    const [loggedInUser, setloggedInUser] = useState(null);
     useEffect(() => {
-        if (logedInUser == null) {
+        if (loggedInUser == null) {
             loadUserFromLocalStorage();
             SortingPreferences.writeToLocalStorage(new SortingPreferences());
         }
@@ -29,7 +26,7 @@ function Recent() {
             (response) => {
                 const userFilled = User.castToUser(response.data);
                 userFilled.token = userObj.token;
-                setLogedInUser(userFilled)
+                setloggedInUser(userFilled)
             },
             (error) => {
                 window.location.href = "/login";
@@ -69,11 +66,11 @@ function Recent() {
         <>
             <div className="content-container">
                 <FileListing
-                    user={logedInUser}
+                    user={loggedInUser}
                     variation="recent"
                 />
             </div>
-            <Nav user={logedInUser} />
+            <Nav user={loggedInUser} />
             <WarningMessage state={warningState} />
         </>
     );

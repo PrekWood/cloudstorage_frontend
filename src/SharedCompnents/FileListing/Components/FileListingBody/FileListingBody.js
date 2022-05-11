@@ -1,13 +1,14 @@
-
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import "./FileListingBody.css";
-import FileGrid from "./../../../FileGrid/FileGrid";
-import FileListItem from "./../../../FileListItem/FileListItem";
 import LoadingAnimation from "./../../../LoadingAnimation/LoadingAnimation";
+import FileListingGrid from "../FileListingGrid/FileListingGrid";
+import FileListingList from "../FileListingList/FileListingList";
 
 function FileListingBody(props) {
     const [files, setFiles] = useState(null);
+    const [folders, setFolders] = useState(null);
     const [layout, setLayout] = useState("grid");
+    const [variation, setVariation] = useState(null);
     const [loadingAnimationState, setLoadingAnimationState] = useState(false);
     useEffect(() => {
         setFiles(props.files)
@@ -16,41 +17,36 @@ function FileListingBody(props) {
         setLayout(props.layout)
     }, [props.layout]);
     useEffect(() => {
+        setFolders(props.folders)
+    }, [props.folders]);
+    useEffect(() => {
         setLoadingAnimationState(props.loadingAnimationState)
     }, [props.loadingAnimationState]);
-
+    useEffect(() => {
+        setVariation(props.variation)
+    }, [props.variation]);
 
     return (
         <>
             <div className={`file-list ${layout}`}>
-                {files == null ?
-                    "" :
-                    layout == "grid" ?
-                        files.map((file) => (
-                            < FileGrid
-                                file={file}
-                                key={file.id}
-                                reHydrateListing={props.reHydrateListing}
-                            />
-                        ))
-                        :
-                        <>
-                            <div className='file-list-item file-list-headers'>
-                                <div className='file-list-img'></div>
-                                <div className='file-list-name'>Name</div>
-                                <div className='file-list-type'>Type</div>
-                                <div className='file-list-size'>File size</div>
-                                <div className='file-list-date'>Date add</div>
-                                <div className='file-list-actions'>Actions</div>
-                            </div>
-                            {
-                                files.map((file) => (
-                                    < FileListItem file={file} key={file.id} reHydrateListing={props.reHydrateListing} />
-                                ))
-                            }
-                        </>
+                { layout === "grid" ?
+                    <FileListingGrid
+                        files={files}
+                        folders={folders}
+                        variation={variation}
+                        currentFolder={props.currentFolder}
+                        reHydrateListing={props.reHydrateListing}
+                    />
+                :
+                    <FileListingList
+                        files={files}
+                        folders={folders}
+                        reHydrateListing={props.reHydrateListing}
+                        currentFolder={props.currentFolder}
+                        variation={props.variation}
+                    />
                 }
-                <LoadingAnimation state={loadingAnimationState} />
+                <LoadingAnimation state={loadingAnimationState}/>
             </div>
         </>
     );
