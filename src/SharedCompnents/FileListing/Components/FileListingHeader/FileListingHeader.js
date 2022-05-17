@@ -14,6 +14,7 @@ import SortingPreferences from '../../../../Classes/SortingPreferences';
 import userEvent from '@testing-library/user-event';
 import FolderGrid from "../../../FolderGrid/FolderGrid";
 import Folder from "../../../../Classes/Folder";
+import LayoutContext from "../../../../Classes/LayoutContext";
 
 
 function FileListingHeader(props) {
@@ -22,14 +23,23 @@ function FileListingHeader(props) {
     // Hader state
     const [headerState, setHeaderState] = useState("initial");
     const [favoritesActive, setFavoritesActive] = useState(false);
-
+    useEffect(()=>{
+        const context = LayoutContext.getContext(props.contextName)
+        if(context.sortingPreferences.onlyFavorites){
+            setFavoritesActive(true)
+        }
+    },[])
 
     function navigateToFolder(folder){
         Folder.getFolderDetails(
             folder.id,
             (response)=>{
                 const folderToRedirect = Folder.castToFolder(response.data);
-                folderToRedirect.setCurrentFolderInLocalStorage();
+
+                const context = LayoutContext.getContext(props.contextName);
+                context.currentFolder = folderToRedirect;
+                LayoutContext.saveContext(props.contextName, context)
+
                 props.reHydrateListing();
             },
             (request)=>{
@@ -57,6 +67,7 @@ function FileListingHeader(props) {
                             updateSortingPrefs={props.updateSortingPrefs}
                             setHeaderState={setHeaderState}
                             setLoadingAnimationState={props.setLoadingAnimationState}
+                            contextName={props.contextName}
                         />
                     )}
                 </div>
@@ -65,28 +76,29 @@ function FileListingHeader(props) {
                 <div className='listing-sorting-and-layout-container'>
                     <div className='sorting-and-favorites'>
 
-                        {(Validate.isNotEmpty(props.variation) && props.variation === "recent") ?
-                            ""
-                            :
+                        {(Validate.isNotEmpty(props.variation) && props.variation === "recent") ? "" :
                             <div className="sort-selector">
-                                <SortSelector reHydrateListing={props.reHydrateListing} />
+                                <SortSelector reHydrateListing={props.reHydrateListing} contextName={props.contextName} />
                             </div>
                         }
 
                         {/* FavoritesToggler */}
-                        <button
-                            className="favorites-toggler"
-                            onClick={() => {
-                                setFavoritesActive(!favoritesActive);
-                                const sortingPrefs = SortingPreferences.loadFromLoalStorage();
-                                sortingPrefs.onlyFavorites = !favoritesActive;
-                                sortingPrefs.writeToLocalStorage();
-                                props.reHydrateListing();
-                                props.updateSortingPrefs()
-                            }}
-                        >
-                            <img src={favoritesActive ? starSvgFull : starSvg} />
-                        </button>
+                        {(Validate.isNotEmpty(props.variation) && props.variation === "shared-files") ? "" :
+                            <button
+                                className="favorites-toggler"
+                                onClick={() => {
+                                    setFavoritesActive(!favoritesActive);
+                                    const context = LayoutContext.getContext(props.contextName)
+                                    context.sortingPreferences.onlyFavorites = !context.sortingPreferences.onlyFavorites;
+                                    LayoutContext.saveContext(props.contextName,context);
+                                    props.reHydrateListing();
+                                    props.updateSortingPrefs()
+                                }}
+                            >
+                                <img src={favoritesActive ? starSvgFull : starSvg} />
+                            </button>
+                        }
+
 
                         {(Validate.isNotEmpty(props.variation) && props.variation === "recent") ?
                             <span className="listing-name">Recent files</span> : ""
@@ -110,7 +122,10 @@ function FileListingHeader(props) {
                     </div>
 
 
-                    <LayoutSelector setLayout={props.setLayout} />
+                    <LayoutSelector
+                        setLayout={props.setLayout}
+                        layout={props.layout}
+                    />
                 </div>
             {/*)}*/}
 

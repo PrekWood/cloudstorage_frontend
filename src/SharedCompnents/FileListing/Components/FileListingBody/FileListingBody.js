@@ -36,6 +36,13 @@ function FileListingBody(props) {
                         variation={variation}
                         currentFolder={props.currentFolder}
                         reHydrateListing={props.reHydrateListing}
+                        // Preview
+                        setPreviewFile={props.setPreviewFile}
+                        setPreviewState={props.setPreviewState}
+                        previewFile={props.previewFile}
+                        // Sharing
+                        setSharingState = {props.setSharingState}
+                        contextName = {props.contextName}
                     />
                 :
                     <FileListingList
@@ -44,6 +51,13 @@ function FileListingBody(props) {
                         reHydrateListing={props.reHydrateListing}
                         currentFolder={props.currentFolder}
                         variation={props.variation}
+                        // Preview
+                        setPreviewFile={props.setPreviewFile}
+                        setPreviewState={props.setPreviewState}
+                        previewFile={props.previewFile}
+                        // Sharing
+                        setSharingState = {props.setSharingState}
+                        contextName = {props.contextName}
                     />
                 }
                 <LoadingAnimation state={loadingAnimationState}/>

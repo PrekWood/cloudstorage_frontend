@@ -6,6 +6,7 @@ import UserFile from "../../../../../../Classes/UserFile";
 import Validate from "../../../../../../Classes/Validate";
 import { ReactComponent as CloseSvg } from "./imgs/cancel.svg";
 import { ReactComponent as SearchSvg } from "./imgs/search.svg";
+import LayoutContext from "../../../../../../Classes/LayoutContext";
 
 
 export default function FileSearch(props) {
@@ -21,9 +22,9 @@ export default function FileSearch(props) {
         props.setHeaderState("initial");
     }
     function updateSortingPreferences(searchQuery) {
-        const prefs = SortingPreferences.loadFromLoalStorage();
-        prefs.searchQuery = searchQuery
-        prefs.writeToLocalStorage();
+        const context = LayoutContext.getContext(props.contextName)
+        context.sortingPreferences.searchQuery = searchQuery;
+        LayoutContext.saveContext(props.contextName,context);
         props.updateSortingPrefs();
     }
 
@@ -34,6 +35,17 @@ export default function FileSearch(props) {
         props.reHydrateListing()
         props.updateSortingPrefs();
     }
+
+    useEffect(()=>{
+        const context = LayoutContext.getContext(props.contextName);
+        const searchQuery = context.sortingPreferences.searchQuery;
+        if(Validate.isEmpty(searchQuery)){
+            return;
+        }
+
+        openSearch();
+        document.getElementById("searchField").value = searchQuery;
+    },[])
 
     return (
         <>

@@ -1,3 +1,36 @@
 body {
     background: #F2FAFF
 }
+
+.settings-form-container {
+    background: white;
+    padding: 150px 60px 60px 60px;
+    border-radius: 10px;
+    width: 600px;
+    margin: auto;
+}
+
+img.settings-user-icon {
+    margin: 0 auto -125px;
+    display: block;
+    height: 300px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+
+form#settings_hidden_image_form {
+    display: none;
+}
+
+span.success {
+    background: limegreen;
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: white;
+    border-radius: 5px;
+    font-size: 22px;
+    padding: 5px 0;
+}
+

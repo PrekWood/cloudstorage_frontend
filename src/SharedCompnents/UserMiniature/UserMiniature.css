@@ -14,6 +14,7 @@
     width: 55px;
     height: 55px;
     z-index: 10;
+    border-radius: 50%;
 }
 
 .navigation span.user-name {

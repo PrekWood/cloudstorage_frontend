@@ -3,6 +3,7 @@ import Validate from "./Validate";
 import Model from "./Model";
 import SortingPreferences from "./SortingPreferences";
 import Folder from "./Folder";
+import LayoutContext from "./LayoutContext";
 
 export default class User extends Model {
 
@@ -16,10 +17,13 @@ export default class User extends Model {
         this.firstName = null;
         this.lastName = null;
         this.countryCodeId = null;
+        this.id = null;
+        this.imagePath = null;
     }
 
     static castToUser(user) {
         const userObj = new User();
+        userObj.id = user.id;
         userObj.idUser = user.idUser;
         userObj.email = user.email;
         userObj.token = user.token;
@@ -28,6 +32,7 @@ export default class User extends Model {
         userObj.firstName = user.firstName;
         userObj.lastName = user.lastName;
         userObj.countryCodeId = user.countryCodeId;
+        userObj.imagePath = user.imagePath;
         return userObj;
     }
 
@@ -128,11 +133,23 @@ export default class User extends Model {
         });
     }
 
+    static getUserDetailsByEmail(email, successMethod, errorMethod) {
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'get',
+            url: `${window.API_URL}/user?email=${email}`,
+            headers: Model.getHeaders(authToken),
+        }).then(function (response) {
+            successMethod(response);
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
     saveUserToLocalStorage() {
         localStorage.setItem("loggedInUser", JSON.stringify(this));
     }
-
-
 
     validateOtp(otpCode, successMethod, errorMethod) {
         console.log(`user.validateOtp: ${this.token}, ${otpCode}`);
@@ -185,9 +202,11 @@ export default class User extends Model {
         });
     }
 
-    getFiles(successMethod, errorMethod, isRecent=false) {
-        const sortingPrefs = SortingPreferences.loadFromLoalStorage();
-        const currentFolder = Folder.loadFromLoalStorage();
+    getFiles(contextName, successMethod, errorMethod, isRecent = false) {
+        const context = LayoutContext.getContext(contextName);
+        const sortingPrefs = context.sortingPreferences;
+        const currentFolder = context.currentFolder;
+
         let ajaxUrl = `${window.API_URL}/files`;
         if (Validate.isNotEmpty(sortingPrefs.orderBy) && Validate.isNotEmpty(sortingPrefs.orderWay)) {
             ajaxUrl += `/${sortingPrefs.orderBy}/${sortingPrefs.orderWay}`;
@@ -201,18 +220,18 @@ export default class User extends Model {
         if (!isRecent) {
             if (Validate.isNotEmpty(currentFolder) && Validate.isNotEmpty(currentFolder.id)) {
                 ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}folderId=${currentFolder.id}`;
+            } else {
+                ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}folderId=-1`;
             }
-        }else{
-            ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}allFiles=true`;
+        } else {
+            ajaxUrl += `${ajaxUrl.includes("?") ? "&" : "?"}allFiles=true&folderId=-1`;
         }
 
         axios({
             method: 'get',
             url: ajaxUrl,
             headers: this.getHeaders(this.token),
-            data:{
-
-            }
+            data: {}
         }).then(function (response) {
             successMethod(response);
         }).catch(function (error) {
@@ -220,10 +239,13 @@ export default class User extends Model {
         });
     }
 
-    static clearTokenFromLocalStorage() {
-        const user = User.loadUserFromLocalStorage();
-        user.token = null;
-        user.saveUserToLocalStorage();
+    static clearDataFromLocalStorage() {
+        localStorage.setItem("allFilesContext", null);
+        localStorage.setItem("currentFolder", null);
+        localStorage.setItem("loggedInUser", null);
+        localStorage.setItem("recentFilesContext", null);
+        localStorage.setItem("sharedFilesContext", null);
+        localStorage.setItem("sortingPreferences", null);
     }
 
     logout(successMethod, errorMethod) {
@@ -232,11 +254,51 @@ export default class User extends Model {
             url: `${window.API_URL}/logout`,
             headers: this.getHeaders(this.token),
         }).then(function (response) {
-            User.clearTokenFromLocalStorage();
+            User.clearDataFromLocalStorage();
             successMethod(response);
         }).catch(function (error) {
             errorMethod(error);
         });
     }
+
+    updateImage(fileToUpload, successMethod, errorMethod) {
+        const formData = new FormData()
+        formData.append("file", fileToUpload);
+
+        axios.put(
+            `${window.API_URL}/user/image`,
+            formData,
+            {
+                headers: {
+                    'accept': 'application/json',
+                    'Accept-Language': 'en-US,en;q=0.8',
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': `multipart/form-data`,
+                }
+            }
+        ).then((response) => {
+            successMethod(response);
+        }).catch((error) => {
+            errorMethod(error);
+        });
+    }
+
+    update(successMethod, errorMethod) {
+        axios({
+            method: 'put',
+            url: `${window.API_URL}/user`,
+            headers: this.getHeaders(this.token),
+            data:{
+                firstName:this.firstName,
+                lastName:this.lastName,
+                phoneNumber:this.phoneNumber,
+            }
+        }).then(function (response) {
+            successMethod(response);
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
 
 }

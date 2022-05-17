@@ -6,8 +6,10 @@ import FileManager from "./FileManager";
 import SortingPreferences from "./SortingPreferences";
 import Folder from "./Folder";
 import DigitalSignature from "./DigitalSignature";
+import Shareable from "./Shareable";
+import LayoutContext from "./LayoutContext";
 
-export default class UserFile extends Model {
+export default class UserFile extends Shareable {
 
     constructor() {
         super();
@@ -22,6 +24,8 @@ export default class UserFile extends Model {
         this.fileTypeIconLink = null;
         this.favorite = null;
         this.dateAdd = null;
+        this.sharedWith = null;
+        this.imagePath = null;
     }
 
     static castToUserFile(file) {
@@ -36,15 +40,28 @@ export default class UserFile extends Model {
         fileObj.size = file.size;
         fileObj.favorite = file.favorite;
         fileObj.dateAdd = file.dateAdd;
+        fileObj.sharedWith = file.sharedWith;
+        fileObj.imagePath = file.imagePath;
         return fileObj;
     }
 
-    uploadFile(successMethod, errorMethod) {
+    uploadFile(contextName, successMethod, errorMethod) {
         const loggedInUser = User.loadUserFromLocalStorage();
         const authToken = loggedInUser.token;
         const formData = new FormData()
+
+        const context = LayoutContext.getContext(contextName);
+        const currentFolder = context.currentFolder;
+
+        let folderId = -1;
+        if(!Validate.isEmpty(currentFolder) &&
+            !currentFolder.isEmpty() &&
+            Validate.isNotEmpty(currentFolder.id)
+        ){
+            folderId = currentFolder.id
+        }
+        formData.append("folderId",folderId);
         formData.append("file", this.fileToUpload);
-        formData.append("folderId", Folder.loadFromLoalStorage().id);
 
         axios.post(
             `${window.API_URL}/file`,
@@ -93,7 +110,7 @@ export default class UserFile extends Model {
         const file = this;
         axios({
             method: 'get',
-            url: `${window.API_URL}/file/${this.id}`,
+            url: `${window.API_URL}/file/${this.id}/download`,
             headers: this.getHeaders(authToken),
         }).then(function (response) {
             DigitalSignature.validate(
@@ -146,34 +163,89 @@ export default class UserFile extends Model {
     }
 
 
-    // static search(searchQuery, successMethod, errorMethod) {
-    //     const loggedInUser = User.loadUserFromLocalStorage();
-    //     const authToken = loggedInUser.token;
-    //     let ajaxUrl = `${window.API_URL}/files`;
-    //     const sortingPrefs = SortingPreferences.loadFromLoalStorage();
-    //     if (Validate.isNotEmpty(sortingPrefs.orderBy) && Validate.isNotEmpty(sortingPrefs.orderWay)) {
-    //         ajaxUrl += `/${sortingPrefs.orderBy}/${sortingPrefs.orderWay}`;
-    //     }
-    //     ajaxUrl += `?searchQuery=${searchQuery}`;
-    //     if (Validate.isNotEmpty(sortingPrefs.onlyFavorites) && sortingPrefs.onlyFavorites) {
-    //         ajaxUrl += `&onlyFavorites=true`;
-    //     }
+    static getFileById(idFile, successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'get',
+            url: `${window.API_URL}/file/${idFile}/`,
+            headers: this.getHeaders(authToken),
+        }).then(function (response) {
+            successMethod(UserFile.castToUserFile(response.data))
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
 
-    //     console.log(ajaxUrl);
-    //     axios({
-    //         method: 'get',
-    //         url: ajaxUrl,
-    //         headers: Model.getHeaders(authToken),
-    //         data: {
-    //             searchQuery: searchQuery
-    //         }
-    //     }).then(function (response) {
-    //         successMethod(response)
-    //     }).catch(function (error) {
-    //         errorMethod(error);
-    //     });
-    // }
+    generateShareableLink(successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'post',
+            url: `${window.API_URL}/share/link`,
+            headers: this.getHeaders(authToken),
+            data:{
+                objectId:this.id,
+                type:"FILE"
+            }
+        }).then(function (response) {
+            successMethod(response)
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
 
+    shareWithUsers(usersToShareWith, successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'post',
+            url: `${window.API_URL}/share/users`,
+            headers: this.getHeaders(authToken),
+            data:{
+                objectId:this.id,
+                type:"FILE",
+                users:usersToShareWith
+            }
+        }).then(function (response) {
+            successMethod(response)
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
+    static getFilesSharedWithUser(successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+
+        const context = LayoutContext.getContext("sharedFilesContext");
+        const sortingPrefs = context.sortingPreferences;
+        const currentFolder = context.currentFolder;
+
+        let ajaxUrl = `${window.API_URL}/files`;
+        if (Validate.isNotEmpty(sortingPrefs.orderBy) && Validate.isNotEmpty(sortingPrefs.orderWay)) {
+            ajaxUrl += `/${sortingPrefs.orderBy}/${sortingPrefs.orderWay}`;
+        }
+        if (Validate.isNotEmpty(currentFolder) && Validate.isNotEmpty(currentFolder.id)) {
+            ajaxUrl += `?folderId=${currentFolder.id}`;
+        }else{
+            ajaxUrl += `?folderId=-1`;
+        }
+        ajaxUrl += `&onlyShared=true`;
+        if (Validate.isNotEmpty(context.sortingPreferences.searchQuery)) {
+            ajaxUrl += `&searchQuery=${context.sortingPreferences.searchQuery}`;
+        }
+
+        axios({
+            method: 'get',
+            url: ajaxUrl,
+            headers: Model.getHeaders(authToken),
+        }).then(function (response) {
+            successMethod(response);
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
 
 
 }

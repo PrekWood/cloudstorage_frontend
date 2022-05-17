@@ -6,15 +6,15 @@ export default class Validate {
     }
 
     static isNotEmpty(text) {
-        return !(text == "" || text == null || text == undefined);
+        return !(text === "" || text === null || text === undefined || text === "null");
     }
 
     static isEmpty(text) {
-        return text == "" || text == null || text == undefined;
+        return text === "" || text === null || text === undefined || text === "null";
     }
 
     static isArrayEmpty(arr) {
-        return arr == null || arr == undefined || arr.length == 0;
+        return arr === null || arr === undefined || arr.length === 0;
     }
 
     static hasAtLeast3Chars(text) {

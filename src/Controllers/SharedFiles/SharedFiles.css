@@ -1,0 +1,44 @@
+body {
+    background: #F2FAFF
+}
+
+
+span.listing-breadcrumb {
+    font-size: 27px;
+    margin-left: 20px;
+}
+
+.shared-files span.file-list-type {
+    display: none;
+}
+
+span.file-list-type-shared-with {
+    display: none;
+}
+
+.shared-files span.file-list-type-shared-with {
+    display: flex;
+    width: 12.5%;
+    justify-content: flex-start;
+}
+
+.shared-files .file-list-type-shared-with .shared-with-user {
+    margin-top: 0;
+}
+
+
+.shared-files-no-files {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 300px);
+    background: #00a8ff73;
+    border-radius: 10px;
+    font-size: 45px;
+    color: white;
+}
+
+.shared-files-no-files a {
+    color: white;
+}

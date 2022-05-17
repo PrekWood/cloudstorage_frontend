@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './InputField.css';
 import visibleSvg from './imgs/visible.svg';
 import hiddenSvg from './imgs/hidden.svg';
@@ -9,6 +9,10 @@ function InputField(props) {
     const [isValid, setValid] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false);
 
+    const [defaultValue, setDefaultValue] = useState(null);
+    useEffect(()=>{
+        setDefaultValue(props.defaultValue);
+    },[props.defaultValue])
 
     if (!("id" in props) || !("name" in props)) {
         return <p>
@@ -20,6 +24,8 @@ function InputField(props) {
     if ("type" in props) {
         inputType = props.type;
     }
+
+
 
     let variation = "";
     if ("variation" in props) {
@@ -59,18 +65,20 @@ function InputField(props) {
         callback(event, { "isValid": isCurrentValueValid });
     }
 
-    function showPassword(inputRef) {
+    function showPassword(e) {
+        e.preventDefault();
         setPasswordVisible(!passwordVisible);
     }
 
     return (
         <>
-            <div className={`form-field ${variation} ${isValid == null ? "" : isValid}`}>
+            <div className={`form-field ${variation} ${isValid == null ? "" : isValid} ${inputType === "password"?"password":""}`}>
                 <input
-                    type={inputType == "password" && passwordVisible ? "text" : inputType}
+                    type={inputType === "password" && passwordVisible ? "text" : inputType}
                     className={`${isValid == null ? "" : isValid}`}
                     id={props.id}
                     placeholder={props.name}
+                    defaultValue={defaultValue}
                     onKeyUp={onKeyUp}
                 />
                 <label htmlFor={props.id}>{props.name}</label>

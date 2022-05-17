@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
 import "./Switch.css";
+import Validate from "../../Classes/Validate";
 
 export default function Switch(props) {
 
-    const [selectedOption, changeSelectedOption] = useState(0);
+    const [selectedOption, changeSelectedOption] = useState(Validate.isEmpty(props.selectedOption)?0:props.selectedOption);
 
     function toggleSwitch() {
         const newSelectedOption = (selectedOption + 1) % 2;

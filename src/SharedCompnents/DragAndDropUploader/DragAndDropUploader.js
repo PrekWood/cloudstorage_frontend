@@ -41,6 +41,7 @@ export default function DragAndDropUploader(props) {
         newFile.fileToUpload = fileToUpload;
         setLoadingAnimationState(true);
         newFile.uploadFile(
+            props.contextName,
             () => {
                 setLoadingAnimationState(false);
                 props.reHydrateListing();

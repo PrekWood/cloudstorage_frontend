@@ -16,6 +16,9 @@ import { ReactComponent as DropDownIcon } from "./imgs/arrow_down.svg";
 import {ReactComponent as RenameSvg} from "./imgs/edit.svg";
 import {ReactComponent as SaveSvg} from "./imgs/save.svg";
 import folderIcon from "./imgs/folder.svg";
+import LayoutContext from "../../Classes/LayoutContext";
+import Folder from "../../Classes/Folder";
+import defaultUserIcon from "../UserMiniature/imgs/default_user.png";
 
 export default function FolderListItem(props) {
 
@@ -39,17 +42,19 @@ export default function FolderListItem(props) {
     // Actions
     function downloadFolder() {
         setLoadingAnimationState(true)
-        // folder.download(
-        //     () => { setLoadingAnimationState(false) },
-        //     (request) => {
-        //         setLoadingAnimationState(false);
-        //         if (!Validate.isEmpty(request.response)) {
-        //             window.displayError(request.response.data.error);
-        //         } else {
-        //             window.displayError("Something went wrong. Please try again later");
-        //         }
-        //     }
-        // );
+        folder.download(
+            () => {
+                setLoadingAnimationState(false)
+            },
+            (request) => {
+                setLoadingAnimationState(false);
+                if (!Validate.isEmpty(request.response)) {
+                    window.displayError(request.response.data.error);
+                } else {
+                    window.displayError("Something went wrong. Please try again later");
+                }
+            }
+        );
     }
     function deleteFolder() {
         window.displayWarning(
@@ -117,37 +122,64 @@ export default function FolderListItem(props) {
 
     function navigateToFolder(){
         if(!renameState){
-            folder.setCurrentFolderInLocalStorage();
+            const context = LayoutContext.getContext(props.contextName);
+            context.currentFolder = Folder.castToFolder(folder);
+            LayoutContext.saveContext(props.contextName, context)
+
             props.reHydrateListing();
         }
+    }
+
+    function openSharingModal(){
+        closeFolderMenu()
+        props.setPreviewState(false);
+        props.setSharingState({
+            isActive:true,
+            type:"folder",
+            object:folder
+        });
     }
 
     return <>
         {folder == null ? "" : (
             <div className='file-list-item folder' >
-                <div className='file-list-img' onClick={navigateToFolder}>
-                    <img
-                        className="folder-icon"
-                        src={folderIcon}
-                    />
-                </div>
-                <form className={`rename-form file-list-name ${renameState ? "open" : "closed"}`} onSubmit={renameFolder}  onClick={navigateToFolder}>
-                    <textarea
-                        rows="1"
-                        className='file-name'
-                        id={`rename_folder_textarea_list_${folder.id}`}
-                        disabled={!renameState}
-                        defaultValue={renameValue==null?"":renameValue}
-                    />
-                    <button type="submit">
-                        <SaveSvg/>
-                        Save
-                    </button>
-                </form>
-                <span className='file-list-type' onClick={navigateToFolder}>FOLDER</span>
-                <span className='file-list-size file-size' onClick={navigateToFolder}>-</span>
-                <span className='file-list-date' onClick={navigateToFolder}>{folder.dateAdd}</span>
+                <div className='file-list-item-inner' onClick={navigateToFolder}>
+                    <div className='file-list-img'>
+                        <img
+                            className="folder-icon"
+                            src={folderIcon}
+                        />
+                    </div>
+                    <form className={`rename-form file-list-name ${renameState ? "open" : "closed"}`} onSubmit={renameFolder}  onClick={navigateToFolder}>
+                        <textarea
+                            rows="1"
+                            className='file-name'
+                            id={`rename_folder_textarea_list_${folder.id}`}
+                            disabled={!renameState}
+                            defaultValue={renameValue==null?"":renameValue}
+                        />
+                        <button type="submit">
+                            <SaveSvg/>
+                            Save
+                        </button>
+                    </form>
+                    <span className='file-list-type'>FOLDER</span>
+                    {/*Shared with*/}
+                    <div className="file-list-type-shared-with shared-with">
+                        {Validate.isEmpty(folder.sharedWith) || folder.sharedWith.length === 1 ? "" : folder.sharedWith.map((sharedWithUser)=>(
+                            <div className="shared-with-user" key={`shared_with_folder_list_${folder.id}_${sharedWithUser.userId}`}>
+                                <img src={Validate.isEmpty(sharedWithUser.userImg) ? defaultUserIcon : `${window.API_URL}/user/${sharedWithUser.userId}/image`} />
+                                <div className="tooltip">
+                                    {sharedWithUser.userName}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <span className='file-list-size file-size'>-</span>
 
+
+                    <span className='file-list-date'>{folder.dateAdd}</span>
+                </div>
                 <div className='file-list-download-dropdown'>
                     <button className="file-list-download" onClick={downloadFolder}>
                         <DownloadSvg />
@@ -158,10 +190,12 @@ export default function FolderListItem(props) {
                     </button>
                     {dropdownState ? (
                         <div className="file-dropdown-menu">
-                            <a className="file-dropdown-links" onClick={()=>{}}>
-                                <ShareSvg />
-                                <span>Share</span>
-                            </a>
+                            {props.variation === "shared-files" ? "" : (
+                                <a className="file-dropdown-links" onClick={openSharingModal}>
+                                    <ShareSvg />
+                                    <span>Share</span>
+                                </a>
+                            )}
                             <a className="file-dropdown-links" onClick={openRenameForm}>
                                 <RenameSvg/>
                                 <span>Rename</span>

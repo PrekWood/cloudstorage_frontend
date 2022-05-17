@@ -29,6 +29,7 @@ export default function LayoutSelector(props) {
         <div className='listing-layout'>
             <Switch
                 options={layoutOptions}
+                selectedOption={props.layout === "list"?1:0}
                 callBack={layoutChange}
             />
         </div>

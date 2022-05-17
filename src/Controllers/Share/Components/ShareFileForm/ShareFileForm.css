@@ -1,0 +1,11 @@
+h1{
+    z-index: 2;
+    font-weight: normal;
+    color: white;
+    font-size: 130px;
+    line-height: 100px;
+    margin: 0;
+    position: absolute;
+    left: 5vh;
+    top: calc(50vh - 100px);
+}

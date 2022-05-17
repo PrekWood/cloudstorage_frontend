@@ -6,6 +6,7 @@ import logoSvg from "./imgs/logo.svg";
 import { ReactComponent as RecentSvg } from "./imgs/recent.svg";
 import { ReactComponent as SettingsSvg } from "./imgs/settings.svg";
 import { ReactComponent as FilesSvg } from "./imgs/folder.svg";
+import { ReactComponent as SharedSvg } from "./imgs/shared.svg";
 
 function Nav(props) {
     return (
@@ -21,6 +22,10 @@ function Nav(props) {
                 <a href="/files" className={`nav-item ${window.location.href == (window.FRONTEND_BASE_URL + "/files") ? "active" : ""}`}>
                     <FilesSvg />
                     <span className="nav-text">ALL FILES</span>
+                </a>
+                <a href="/shared" className={`nav-item ${window.location.href == (window.FRONTEND_BASE_URL + "/shared") ? "active" : ""}`}>
+                    <SharedSvg />
+                    <span className="nav-text">SHARED FILES</span>
                 </a>
                 <a href="/settings" className={`nav-item ${window.location.href == (window.FRONTEND_BASE_URL + "/settings") ? "active" : ""}`}>
                     <SettingsSvg />

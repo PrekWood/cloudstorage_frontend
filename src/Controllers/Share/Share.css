@@ -1,0 +1,64 @@
+.form-container.shareable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-container.shareable .file-grid {
+    margin: 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px; /* padding: 20px; */
+    box-shadow: unset;
+}
+
+.form-container.shareable .file-grid .file-grid-inner {
+    padding: 20px;
+}
+
+.form-container.shareable .file-grid textarea.file-name {
+    margin-bottom: 0;
+}
+
+
+.form-container.shareable .file-grid {
+    margin: 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px; /* padding: 20px; */
+    box-shadow: unset;
+}
+
+.form-container.shareable .file-grid .file-grid-inner {
+    padding: 20px;
+}
+
+.form-container.shareable .file-grid textarea.file-name {
+    margin-bottom: 0;
+}
+
+button#link_download {
+    background: black;
+    border-radius: 5px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 36px;
+    padding: 15px 20px;
+    width: 100%;
+}
+
+button#link_download svg {
+    height: 30px;
+    width: 30px;
+    fill: white;
+    margin-right: 20px;
+}
+
+.form-container.shareable .file-grid.folder > div.folder-container {
+    padding: 20px;
+}
+
+.form-container.shareable img.folder-icon {
+    width: 160px;
+}

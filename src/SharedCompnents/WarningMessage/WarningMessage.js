@@ -1,8 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import "./WarningMessage.css";
-import thinkingImoji from "./imgs/thinking.png"
-import sadImoji from "./imgs/sad.png"
+import thinkingEmoji from "./imgs/thinking.png"
+import sadEmoji from "./imgs/sad.png"
+import happyEmoji from "./imgs/happy.png"
 import { ReactComponent as CancelSvg } from "./imgs/cancel.svg"
 import { ReactComponent as DeleteSvg } from "./imgs/delete.svg"
 
@@ -29,17 +30,39 @@ function WarningMessage(props) {
         })
     }
 
+    function getEmoji(type){
+        switch (type){
+            case "warning":
+                return thinkingEmoji;
+            case "error":
+                return sadEmoji;
+            case "success":
+                return happyEmoji;
+        }
+    }
+
+    function getHeadline(type){
+        switch (type){
+            case "warning":
+                return "Warning";
+            case "error":
+                return "Error";
+            case "success":
+                return "Success";
+        }
+    }
+
     return (
         <>
             <div className={`warning-message ${state.active ? "active" : "inactive"}`}>
                 <div className="warning-info-container">
-                    <img src={state.type == "warning" ? thinkingImoji : sadImoji} />
+                    <img src={getEmoji(state.type)} />
                     <div className="waring-info">
-                        <h3>{state.type == "warning" ? "Warning" : "Error"}</h3>
+                        <h3>{getHeadline(state.type)}</h3>
                         <span className="waring-desc">{state.message}</span>
                     </div>
                 </div>
-                {state.type == "warning" ? (
+                {state.type === "warning" ? (
                     <div className="warining-buttons">
                         <button onClick={() => { closeMessage(); state.cancelMethod(); }}>
                             <CancelSvg />

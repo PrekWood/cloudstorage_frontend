@@ -4,8 +4,12 @@ import User from "./User";
 import Validate from "./Validate";
 import FileManager from "./FileManager";
 import DigitalSignature from "./DigitalSignature";
+import Shareable from "./Shareable";
+import SortingPreferences from "./SortingPreferences";
+import LayoutContext from "./LayoutContext";
 
-export default class Folder extends Model {
+export default class Folder extends Shareable {
+
     constructor() {
         super();
         this.id = null;
@@ -14,6 +18,8 @@ export default class Folder extends Model {
         this.idUser = null;
         this.breadcrumb = null;
         this.dateAdd = null;
+        this.shared = false;
+        this.sharedWith = false;
     }
 
     static castToFolder(folder) {
@@ -24,6 +30,8 @@ export default class Folder extends Model {
         folderObj.idUser = folder.idUser;
         folderObj.breadcrumb = folder.breadcrumb;
         folderObj.dateAdd = folder.dateAdd;
+        folderObj.shared = folder.shared;
+        folderObj.sharedWith = folder.sharedWith;
         return folderObj;
     }
 
@@ -36,7 +44,7 @@ export default class Folder extends Model {
             headers: this.getHeaders(loggedInUser.token),
             data: {
                 name: this.name,
-                parentFolderId: this.parentFolderId,
+                parentFolderId: Validate.isEmpty(this.parentFolderId)? -1 : this.parentFolderId,
             }
         }).then(function (response) {
             console.log("folder create success");
@@ -47,12 +55,19 @@ export default class Folder extends Model {
         });
     }
 
-    static getFolders(successMethod, errorMethod){
+    static getFolders(contextName, successMethod, errorMethod){
         const loggedInUser = User.loadUserFromLocalStorage();
-        const currentFolder = Folder.loadFromLoalStorage();
+        const context = LayoutContext.getContext(contextName);
+        const currentFolder = context.currentFolder;
+
         let urlParams = "";
-        if(currentFolder.parentFolderId != null){
-            urlParams = `?folderId=${currentFolder.id}`;
+        let currentFolderId = -1;
+        if(Validate.isNotEmpty(currentFolder) && Validate.isNotEmpty(currentFolder.id)){
+            currentFolderId = currentFolder.id;
+        }
+        urlParams = `?folderId=${currentFolderId}`;
+        if (Validate.isNotEmpty(context.sortingPreferences.searchQuery)) {
+            urlParams += `&searchQuery=${context.sortingPreferences.searchQuery}`;
         }
 
         axios({
@@ -66,7 +81,7 @@ export default class Folder extends Model {
         });
     }
 
-    static loadFromLoalStorage(){
+    /*static loadFromLoalStorage(contextName=null){
         let currentFolder = localStorage.getItem("currentFolder");
         if (Validate.isEmpty(currentFolder)) {
             return new Folder();
@@ -88,10 +103,16 @@ export default class Folder extends Model {
             folderToReturn[property] = currentFolderJson[property];
         }
         return folderToReturn;
-    }
+    }*/
 
-    setCurrentFolderInLocalStorage(){
-        localStorage.setItem("currentFolder", JSON.stringify(this));
+    setCurrentFolderInLocalStorage(contextName=null){
+        if(contextName == null){
+            localStorage.setItem("currentFolder", JSON.stringify(this));
+        }else{
+            const context = LayoutContext.getContext(contextName)
+            context.currentFolder = this;
+            LayoutContext.saveContext(contextName,context);
+        }
     }
 
     renameTo(newName, successMethod, errorMethod) {
@@ -142,25 +163,119 @@ export default class Folder extends Model {
     download(successMethod, errorMethod){
         const loggedInUser = User.loadUserFromLocalStorage();
         const authToken = loggedInUser.token;
-        const foler = this;
+        const folder = this;
+
+        // First create zip and download it
         axios({
             method: 'get',
-            url: `${window.API_URL}/folder/${this.id}/download`,
+            url: `${window.API_URL}/folder/${this.id}/zip`,
             headers: this.getHeaders(authToken),
         }).then(function (response) {
-            DigitalSignature.validate(
-                response.data,
-                (validationResponse) => {
+
+            // Then validate the digital signature
+            DigitalSignature.validate(response.data,(validationResponse) => {
+
+                    // Download The file
                     const fileBytes = validationResponse.data.fileBytes;
                     const fileBlob = FileManager.createBlobFromFileBytes(fileBytes);
-                    FileManager.downloadBlob(fileBlob, foler.name+".zip");
-                    successMethod();
-                },
-                errorMethod
+                    FileManager.downloadBlob(fileBlob, folder.name+".zip");
+
+                    // And finally delete the zip file
+                    Folder.deleteZipFolder(
+                        folder.id,
+                        successMethod ,
+                        errorMethod
+                    )
+
+                },(response)=>{
+                    console.log("error with the validation")
+                    errorMethod(response);
+                }
             )
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
+    static deleteZipFolder(idFolder, successMethod, errorMethod){
+        console.log("deletezipfolder");
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'delete',
+            url: `${window.API_URL}/folder/${idFolder}/zip`,
+            headers: this.getHeaders(authToken),
+        }).then(function (response) {
+            console.log("delete success")
+            successMethod(response)
+        }).catch(function (error) {
+            console.log("delete error")
+            errorMethod(error);
+        });
+    }
+
+    generateShareableLink(successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'post',
+            url: `${window.API_URL}/share/link`,
+            headers: this.getHeaders(authToken),
+            data:{
+                objectId:this.id,
+                type:"FOLDER"
+            }
+        }).then(function (response) {
             successMethod(response)
         }).catch(function (error) {
             errorMethod(error);
         });
     }
+
+    shareWithUsers(usersToShareWith, successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        axios({
+            method: 'post',
+            url: `${window.API_URL}/share/users`,
+            headers: this.getHeaders(authToken),
+            data:{
+                objectId:this.id,
+                type:"FOLDER",
+                users:usersToShareWith
+            }
+        }).then(function (response) {
+            successMethod(response)
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
+    static getFoldersSharedWithUser(successMethod, errorMethod){
+        const loggedInUser = User.loadUserFromLocalStorage();
+        const authToken = loggedInUser.token;
+        const context = LayoutContext.getContext("sharedFilesContext");
+        const currentFolder = context.currentFolder;
+
+        let ajaxUrl = `${window.API_URL}/folders?onlyShared=true`;
+        if (Validate.isNotEmpty(currentFolder) && Validate.isNotEmpty(currentFolder.id)) {
+            ajaxUrl += `&folderId=${currentFolder.id}`;
+        }else{
+            ajaxUrl += `&folderId=-1`;
+        }
+        if (Validate.isNotEmpty(context.sortingPreferences.searchQuery)) {
+            ajaxUrl += `&searchQuery=${context.sortingPreferences.searchQuery}`;
+        }
+
+        axios({
+            method: 'get',
+            url: ajaxUrl,
+            headers: Model.getHeaders(authToken),
+        }).then(function (response) {
+            successMethod(response);
+        }).catch(function (error) {
+            errorMethod(error);
+        });
+    }
+
 }

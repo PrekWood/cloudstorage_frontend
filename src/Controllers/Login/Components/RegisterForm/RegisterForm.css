@@ -55,6 +55,45 @@ span.errors.hidden {
     display: none;
 }
 
+.register-form.active .password::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: #efefef;
+    padding: 10px;
+    font-size: 20px;
+    content: "Password must be at least 8 characters and should contain both letters and numbers";
+    border-radius: 5px;
+    opacity: 0;
+    transition: all 1s ease;
+}
+
+.register-form.active .password.invalid::after {
+    top: calc(100% + 10px);
+    opacity: 0.9;
+    z-index: 9999;
+}
+
+.register-form.active .password::before {
+    content: "";
+    opacity: 0;
+    border-bottom: 15px solid #efefef;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    z-index: -1;
+    transition: all 1s ease;
+}
+
+.register-form.active .password.invalid::before {
+    opacity: 0.9;
+    top: calc(100% + -4px);
+    z-index: 9999;
+}
+
 @keyframes hideRegisterForm {
     0% {
         top: calc(50vh - var(--registerFormTop));

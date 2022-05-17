@@ -6,6 +6,7 @@ import Validate from "../../../../Classes/Validate";
 import Folder from "../../../../Classes/Folder";
 import LoadingAnimation from "../../../LoadingAnimation/LoadingAnimation";
 import FolderGrid from "../../../FolderGrid/FolderGrid";
+import LayoutContext from "../../../../Classes/LayoutContext";
 
 export default function FileListingGrid(props) {
 
@@ -28,9 +29,12 @@ export default function FileListingGrid(props) {
     function createNewFolder() {
         setNewFolderAnimationState(true);
 
+        const context = LayoutContext.getContext(props.contextName);
+        const currentFolder = context.currentFolder;
+
         const newFolder = new Folder();
         newFolder.name = "New Folder";
-        newFolder.parentFolderId = Folder.loadFromLoalStorage().id;
+        newFolder.parentFolderId = currentFolder.id;
         newFolder.create(
             () => {
                 setNewFolderAnimationState(false);
@@ -48,12 +52,29 @@ export default function FileListingGrid(props) {
     }
 
     function navigateToPreviousFolder() {
-        const currentFolder = Folder.loadFromLoalStorage();
+        const context = LayoutContext.getContext(props.contextName);
+        const currentFolder = context.currentFolder;
+
+        // Patent so that it doesn't go to other users file when is shared
+        if(Validate.isNotEmpty(currentFolder.shared) && currentFolder.shared){
+            console.log("currentFolder.shared");
+            const context = LayoutContext.getContext(props.contextName);
+            context.currentFolder = new Folder();
+            LayoutContext.saveContext(props.contextName, context)
+
+            props.reHydrateListing();
+            return;
+        }
+
         Folder.getFolderDetails(
             currentFolder.parentFolderId,
             (response)=>{
                 const folderToRedirect = Folder.castToFolder(response.data);
-                folderToRedirect.setCurrentFolderInLocalStorage();
+
+                const context = LayoutContext.getContext(props.contextName);
+                context.currentFolder = folderToRedirect;
+                LayoutContext.saveContext(props.contextName, context)
+
                 props.reHydrateListing();
             },
             (request) => {
@@ -88,8 +109,14 @@ export default function FileListingGrid(props) {
                         folders.map((folder) => (
                             < FolderGrid
                                 folder={folder}
-                                key={`folder_${folder.id}`}
+                                key={`folder_grid_${folder.id}`}
                                 reHydrateListing={props.reHydrateListing}
+                                // Preview
+                                setPreviewState={props.setPreviewState}
+                                // Sharing
+                                setSharingState = {props.setSharingState}
+                                contextName = {props.contextName}
+                                variation = {props.variation}
                             />
                         ))
                     )
@@ -101,14 +128,22 @@ export default function FileListingGrid(props) {
                 (files.map((file) => (
                     < FileGrid
                         file={file}
-                        key={`file_${file.id}`}
+                        key={`filer_grid_${file.id}`}
+                        variation = {props.variation}
                         reHydrateListing={props.reHydrateListing}
+                        // Preview
+                        setPreviewFile={props.setPreviewFile}
+                        setPreviewState={props.setPreviewState}
+                        previewFile={props.previewFile}
+                        // Sharing
+                        setSharingState = {props.setSharingState}
                     />
                 )))
             }
             {
-                (Validate.isEmpty(props.variation) || props.variation !== "recent") ?
+                (Validate.isEmpty(props.variation) || (props.variation !== "recent" && props.variation !== "shared-files")) ?
                     (
+
                         <div className="file-grid new-folder" onClick={createNewFolder}>
                             <div className="file-icon">
                                 <NewFolderSvg/>

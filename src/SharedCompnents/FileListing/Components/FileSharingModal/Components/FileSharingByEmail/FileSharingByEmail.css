@@ -1,0 +1,86 @@
+.add-errors {
+    width: calc(100% - 20px);
+    background: #ff8383;
+    padding: 0 10px;
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: all .5s ease;
+}
+
+.add-errors.active {
+    max-height: 50px;
+    overflow: auto;
+    padding: 5px 10px;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 250px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+    overflow: auto;
+}
+
+.user-to-share-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    position: relative;
+}
+
+.user-to-share-item img {
+    height: 60px;
+}
+
+.user-to-share-info {
+    margin-left: 20px;
+}
+
+span.user-to-share-name {
+    font-size: 26px;
+    display: block;
+}
+
+span.user-to-share-privileges {
+    font-size: 20px;
+    color: #cbcbcb;
+}
+
+
+button.user-to-share-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+button.user-to-share-remove svg {
+    height: 15px;
+    width: 15px;
+}
+
+button.share-with-users {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    margin-top: 20px;
+    background: linear-gradient(132deg, #02ECFF, #FE49D4);
+    border-radius: 5px;
+    font-size: 40px;
+    line-height: 37px;
+    color: white;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+button.share-with-users svg {
+    width: 35px;
+    height: 35px;
+    fill: white;
+    margin-right: 15px;
+}

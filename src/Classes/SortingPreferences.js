@@ -11,16 +11,16 @@ export default class SortingPreferences extends Model {
         this.searchQuery = null;
     }
 
-    static loadFromLoalStorage() {
-        const prefs = localStorage.getItem("sortingPreferences");
-        if (Validate.isEmpty(prefs)) {
+    static loadFromLocalStorage(contextName = "sortingPreferences") {
+        const context = localStorage.getItem(contextName);
+        if (Validate.isEmpty(context)) {
             return new SortingPreferences();
         }
 
-        let prefsJson = null;
+        let contextJson = null;
         try {
-            prefsJson = JSON.parse(prefs);
-            if (prefsJson == null) {
+            contextJson = JSON.parse(context);
+            if (contextJson == null) {
                 throw 'could not parse';
             }
         } catch (e) {
@@ -28,8 +28,8 @@ export default class SortingPreferences extends Model {
         }
 
         const sortingPreferences = new SortingPreferences();
-        for (const property in prefsJson) {
-            sortingPreferences[property] = prefsJson[property];
+        for (const property in contextJson.sortingPreferences) {
+            sortingPreferences[property] = contextJson.sortingPreferences[property];
         }
         return sortingPreferences;
     }

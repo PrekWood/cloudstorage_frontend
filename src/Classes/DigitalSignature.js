@@ -6,11 +6,10 @@ import FileManager from "./FileManager";
 export default class DigitalSignature {
     static validate(downloadResponse, successMethod, errorMethod){
         const loggedInUser = User.loadUserFromLocalStorage();
-        const authToken = loggedInUser.token;
         axios({
             method: 'post',
             url: `${window.API_URL}/validate-signature`,
-            headers: Model.getHeaders(authToken),
+            headers: Model.getHeaders(),
             data: {
                 //digitalSignature: "test_"+downloadResponse.digitalSignature,
                 //file: "test_"+FileManager.base64ToHex(downloadResponse.file),

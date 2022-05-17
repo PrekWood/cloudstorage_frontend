@@ -1,0 +1,49 @@
+
+.form-checkbox input{
+    position: absolute;
+    left: -20px;
+    display:none;
+}
+
+.checkbox-container.not-checked svg {
+    display: none;
+}
+
+.checkbox-container {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.checkbox-container svg {
+    width: 20px;
+    height: 20px;
+}
+
+
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-checkbox label {
+    font-size: 23px;
+    margin-left: 20px;
+    color: #CBCBCB;
+    cursor: pointer;
+}
+
+.checkbox-container.checked {
+    background: #007cff;
+    border: 2px solid #007cff;
+}
+
+.checkbox-container.checked svg * {
+    fill: white !important;
+}

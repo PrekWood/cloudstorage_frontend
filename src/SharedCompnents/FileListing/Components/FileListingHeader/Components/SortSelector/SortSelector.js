@@ -10,6 +10,7 @@ import dateAddDescSvg from "./imgs/date_add_desc.svg";
 import fileNameAscSvg from "./imgs/name_asc.svg";
 import fileNameDescSvg from "./imgs/name_desc.svg";
 import arrowSvg from "./imgs/arrow.svg";
+import LayoutContext from "../../../../../../Classes/LayoutContext";
 
 export default function SortSelector(props) {
 
@@ -31,14 +32,14 @@ export default function SortSelector(props) {
         {
             id: 3,
             name: "",
-            orderBy: "fileName",
+            orderBy: "name",
             orderWay: "asc",
             svg: fileNameAscSvg
         },
         {
             id: 4,
             name: "",
-            orderBy: "fileName",
+            orderBy: "name",
             orderWay: "desc",
             svg: fileNameDescSvg
         },
@@ -46,10 +47,10 @@ export default function SortSelector(props) {
 
     function changeSorting(sortingOption) {
         // Update sorting preferences in the localstorage
-        const sortingPreferences = SortingPreferences.loadFromLoalStorage();
-        sortingPreferences.orderBy = sortingOption.orderBy;
-        sortingPreferences.orderWay = sortingOption.orderWay;
-        sortingPreferences.writeToLocalStorage();
+        const context = LayoutContext.getContext(props.contextName)
+        context.sortingPreferences.orderBy = sortingOption.orderBy;
+        context.sortingPreferences.orderWay = sortingOption.orderWay;
+        LayoutContext.saveContext(props.contextName,context);
 
         props.reHydrateListing();
     }

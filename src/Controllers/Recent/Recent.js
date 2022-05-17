@@ -27,6 +27,7 @@ function Recent() {
                 const userFilled = User.castToUser(response.data);
                 userFilled.token = userObj.token;
                 setloggedInUser(userFilled)
+                userFilled.saveUserToLocalStorage()
             },
             (error) => {
                 window.location.href = "/login";
@@ -61,15 +62,25 @@ function Recent() {
             cancelMethod: () => { },
         });
     }
+    window.displaySuccess = (msg) => {
+        setWarningState({
+            active: true,
+            type: "success",
+            message: msg,
+            confirmMethod: () => { },
+            cancelMethod: () => { },
+        });
+    }
 
     return (
         <>
-            <div className="content-container">
-                <FileListing
-                    user={loggedInUser}
-                    variation="recent"
-                />
-            </div>
+            <FileListing
+                user={loggedInUser}
+                variation="recent"
+                defaultLayout="grid"
+                // Local storage context name
+                localStorageContextName="recentFilesContext"
+            />
             <Nav user={loggedInUser} />
             <WarningMessage state={warningState} />
         </>

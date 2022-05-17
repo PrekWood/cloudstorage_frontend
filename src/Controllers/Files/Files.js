@@ -27,6 +27,7 @@ function Files() {
                 const userFilled = User.castToUser(response.data);
                 userFilled.token = userObj.token;
                 setloggedInUser(userFilled)
+                userFilled.saveUserToLocalStorage()
             },
             (error) => {
                 window.location.href = "/login";
@@ -61,18 +62,27 @@ function Files() {
             cancelMethod: () => { },
         });
     }
+    window.displaySuccess = (msg) => {
+        setWarningState({
+            active: true,
+            type: "success",
+            message: msg,
+            confirmMethod: () => { },
+            cancelMethod: () => { },
+        });
+    }
 
     return (
         <>
-            <div className="content-container">
-                <FileListing
-                    user={loggedInUser}
-                    variation="all-files"
-                />
-            </div>
+            <FileListing
+                user={loggedInUser}
+                variation="all-files"
+                defaultLayout="list"
+                // Local storage context name
+                localStorageContextName="allFilesContext"
+            />
             <Nav user={loggedInUser} />
             <WarningMessage state={warningState} />
-
         </>
     );
 }

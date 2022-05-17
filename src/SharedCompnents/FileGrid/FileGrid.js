@@ -15,6 +15,7 @@ import {ReactComponent as DeleteSvg} from "./imgs/delete.svg";
 import {ReactComponent as PreviewSvg} from "./imgs/preview.svg";
 import {ReactComponent as RenameSvg} from "./imgs/edit.svg";
 import {ReactComponent as SaveSvg} from "./imgs/save.svg";
+import defaultUserIcon from "../UserMiniature/imgs/default_user.png";
 
 export default function FileGrid(props) {
 
@@ -22,6 +23,7 @@ export default function FileGrid(props) {
     const [file, setFile] = useState(null);
     useEffect(() => {
         setFile(props.file);
+        console.log(props.file)
     }, [props.file]);
 
     function addToFavorites() {
@@ -83,10 +85,14 @@ export default function FileGrid(props) {
             "You're about to delete a file. Are you sure you want to continue?",
             () => {
                 setLoadingAnimationState(true)
+                // const idFile = file.id;
                 file.delete(
                     () => {
                         setLoadingAnimationState(false);
-                        props.reHydrateListing()
+                        props.reHydrateListing(null, null, true)
+                        if (props.previewFile != null && props.previewFile.id === file.id) {
+                            props.setPreviewState(false);
+                        }
                     },
                     (request) => {
                         setLoadingAnimationState(false);
@@ -156,49 +162,31 @@ export default function FileGrid(props) {
 
     // Drag N Drop move
     const [dragAndDropState, setDragAndDropState] = useState(false);
-    // const [dragAndDropPosition, setDragAndDropPosition] = useState({
-    //     top:0,
-    //     left:0,
-    //     width:0,
-    //     height:0,
-    // });
-    //
-    // function mouseDown(e) {
-    //     const mouseTop = e.clientY;
-    //     const mouseLeft = e.clientX;
-    //     const width = e.target.clientWidth;
-    //     const height = e.target.clientHeight;
-    //     setDragAndDropPosition({
-    //         top:`${mouseTop-height*0.2}px`,
-    //         left:`${mouseLeft-width*0.5}px`,
-    //         width:width,
-    //         height:height,
-    //     })
-    //     setDragAndDropState(true);
-    // }
-    //
-    // function mouseOver(e) {
-    //
-    // }
-    //
-    // function mouseUp() {
-    //     console.log("mouseUp")
-    //     setDragAndDropState(false);
-    // }
-    //
-    // window.addEventListener('mousemove', function (e) {
-    //     if(dragAndDropState){
-    //         return;
-    //     }
-    //
-    //     const mouseTop = e.clientY;
-    //     const mouseLeft = e.clientX;
-    //     const position = dragAndDropPosition;
-    //     position.top = `${mouseTop-dragAndDropPosition.height*0.2}px`
-    //     position.left = `${mouseLeft-dragAndDropPosition.width*0.5}px`
-    //     console.log(` top: ${position.top} left: ${position.left} `)
-    //     setDragAndDropPosition(position)
-    // });
+
+
+    function openPreviewFile() {
+        if(props.variation === "link"){
+            return
+        }
+        closeFileMenu();
+        props.setSharingState({
+            isActive: false,
+            type: "file",
+            object: null
+        });
+        props.setPreviewFile(file);
+        props.setPreviewState(true);
+    }
+
+    function openSharingModal() {
+        closeFileMenu();
+        props.setPreviewState(false);
+        props.setSharingState({
+            isActive: true,
+            type: "file",
+            object: file
+        });
+    }
 
     return <>
         {file == null ? "" : (
@@ -207,13 +195,7 @@ export default function FileGrid(props) {
             >
                 <div
                     className={`file-grid-inner ${dragAndDropState ? "drag-and-drop" : ""}`}
-                    // onMouseDown={mouseDown}
-                    // onMouseUp={mouseUp}
-                    // onMouseOver={mouseOver}
-                    // style={{
-                    //     top:dragAndDropPosition.top,
-                    //     left:dragAndDropPosition.left,
-                    // }}
+                    onClick={openPreviewFile}
                 >
                     {/*Icon*/}
                     <div className='file-icon' style={{backgroundImage: `url(${fileBackgroundSvg})`}}>
@@ -223,6 +205,19 @@ export default function FileGrid(props) {
                         />
                         <span className='file-extention'>{file.extension}</span>
                     </div>
+
+                    {/*Shared with*/}
+                    <div className="shared-with">
+                        {Validate.isEmpty(file.sharedWith) || file.sharedWith.length == 1 ? "" : file.sharedWith.map((sharedWithUser)=>(
+                            <div className="shared-with-user" key={`shared_with_file_grid_${file.id}_${sharedWithUser.userId}`}>
+                                <img src={Validate.isEmpty(sharedWithUser.userImg) ? defaultUserIcon : `${window.API_URL}/user/${sharedWithUser.userId}/image`} />
+                                <div className="tooltip">
+                                    {sharedWithUser.userName}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
                     {/*Name and rename form*/}
                     <form className={`rename-form ${renameState ? "open" : "closed"}`} onSubmit={renameFile}>
                     <textarea
@@ -239,45 +234,53 @@ export default function FileGrid(props) {
                     </form>
                     {/*size*/}
                     <span className='file-size'>{file.size}</span>
-                    {/*favs*/}
+
+                </div>
+
+
+                {/*favs*/}
+                {props.variation === "link" || props.variation === "shared-files" ? "" :
                     <button className="file-favorites" onClick={addToFavorites}>
                         {file.favorite ? <StarSvgActive/> : <StarSvg/>}
                     </button>
-                    {/*dropdown*/}
-                    <div className="dropdown-container">
-                        <button className="file-menu" onClick={openFileMenu}>
-                            <DotsSvg/>
-                        </button>
-                        {dropdownState ? (
-                            <div className="file-dropdown-menu">
-                                <a className="file-dropdown-links" onClick={downloadFile}>
-                                    <DownloadSvg/>
-                                    <span>Download</span>
-                                </a>
-                                <a className="file-dropdown-links" onClick={downloadFile}>
-                                    <ShareSvg/>
-                                    <span>Share</span>
-                                </a>
-                                <a className="file-dropdown-links" onClick={openRenameForm}>
-                                    <RenameSvg/>
-                                    <span>Rename</span>
-                                </a>
-                                <a className="file-dropdown-links" onClick={deleteFile}>
-                                    <PreviewSvg/>
-                                    <span>Preview</span>
-                                </a>
-                                <a className="file-dropdown-links" onClick={deleteFile}>
-                                    <DeleteSvg/>
-                                    <span>Delete</span>
-                                </a>
-                            </div>
-                        ) : ""}
-                    </div>
-                    {dropdownState ? (
-                        <div className="file-dropdown-filter" onClick={closeFileMenu}></div>
-                    ) : ""}
-                </div>
+                }
+                {/*dropdown*/}
+                {props.variation === "link" ? "" :
+                    (
+                        <div className="dropdown-container">
+                            <button className="file-menu" onClick={openFileMenu}>
+                                <DotsSvg/>
+                            </button>
+                            {dropdownState ? (
+                                <div className="file-dropdown-menu">
+                                    <a className="file-dropdown-links" onClick={downloadFile}>
+                                        <DownloadSvg/>
+                                        <span>Download</span>
+                                    </a>
+                                    {props.variation === "shared-files"?"":(
+                                        <a className="file-dropdown-links" onClick={openSharingModal}>
+                                            <ShareSvg/>
+                                            <span>Share</span>
+                                        </a>
+                                    )}
+                                    <a className="file-dropdown-links" onClick={openRenameForm}>
+                                        <RenameSvg/>
+                                        <span>Rename</span>
+                                    </a>
+                                    <a className="file-dropdown-links" onClick={deleteFile}>
+                                        <DeleteSvg/>
+                                        <span>Delete</span>
+                                    </a>
+                                </div>
+                            ) : ""}
+                        </div>
 
+                    )
+                }
+
+                {dropdownState ? (
+                    <div className="file-dropdown-filter" onClick={closeFileMenu}></div>
+                ) : ""}
 
                 <LoadingAnimation state={loadingAnimationState}/>
             </div>

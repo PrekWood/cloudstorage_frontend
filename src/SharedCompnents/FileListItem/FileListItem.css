@@ -6,6 +6,7 @@
     margin: 0 15px;
     border-bottom: 2px solid #ededed;
     position: relative;
+    cursor: pointer;
 }
 
 .file-list.list {
@@ -142,13 +143,16 @@ a.file-dropdown-links span {
     text-align: left;
 }
 
-
-.file-list-item form.rename-form textarea.file-name {
-    padding: 2px;
-    width: calc(100% - 8px);
-    resize:none;
+.file-list-item form.rename-form.open textarea.file-name {
+    cursor: auto;
 }
 
+.file-list-item form.rename-form textarea.file-name {
+    width: calc(100% - 28px);
+    resize: none;
+    padding: 7px 10px;
+    cursor: pointer;
+}
 
 
 .file-list-item form.rename-form button svg {
@@ -166,11 +170,52 @@ form.rename-form.open span.rename-file-extention {
     align-items: center;
     justify-content: center;
     width: auto;
-    right: 3px;
+    right: 7px;
     left: unset;
     bottom: 7px;
     top: 2px;
-    font-size: 18px;
+    font-size: 22px;
     height: auto;
     padding: 0 10px;
+}
+
+.file-list-item-inner {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.file-list-item-actions {
+    display: flex;
+    align-items: center;
+    width: 20%;
+}
+
+
+.file-list-item-inner .file-list-name {
+    width: calc(30% + calc(20% / 5));
+}
+
+.file-list-item-inner .file-list-type {
+    width: 12.5%;
+}
+
+.file-list-item-inner .file-list-size {
+    width: 12.5%;
+}
+
+.file-list-item-inner .file-list-date {
+    width: 25%;
+}
+
+.file-list-item-inner .file-list-actions {
+    width: calc(20% + calc(20% / 5));
+}
+
+.file-list-item-inner .file-list-name {
+    width: 37.5%;
+}
+
+.file-list-item-inner .file-list-img {
+    width: 12.5%;
 }

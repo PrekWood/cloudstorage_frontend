@@ -39,6 +39,7 @@
 
 .warning-info-container img {
     padding: 30px;
+    max-height: 96px;
 }
 
 .waring-info h3 {

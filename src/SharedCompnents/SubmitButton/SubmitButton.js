@@ -1,5 +1,6 @@
 import React from 'react';
 import './SubmitButton.css';
+import Validate from "../../Classes/Validate";
 
 function SubmitButton(props) {
 
@@ -14,7 +15,10 @@ function SubmitButton(props) {
                 type="submit"
                 className="submit-button"
                 onClick={onClickFunction}
-            >{props.text}</button>
+            >
+                {Validate.isEmpty(props.svg) ? "" : <img src={props.svg} />}
+                {props.text}
+            </button>
         </>
     );
 }

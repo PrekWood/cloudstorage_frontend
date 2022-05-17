@@ -1,5 +1,5 @@
 .file-grid {
-    margin: 20px 40px;
+    margin: 20px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 5px 10px #00000017;
@@ -7,7 +7,7 @@
     cursor: pointer;
 }
 
-.file-grid-inner{
+.file-grid-inner {
     padding: 50px 30px;
 }
 
@@ -23,7 +23,7 @@ img.file-type-img {
 }
 
 .file-list {
-    margin: 20px -40px
+    margin: 20px -20px
 }
 
 .file-icon {
@@ -92,9 +92,11 @@ button.file-menu > svg {
     right: 10px;
     top: 10px;
 }
+
 button.file-menu {
     padding: 5px;
 }
+
 .file-dropdown-filter {
     position: fixed;
     top: 0;
@@ -190,14 +192,64 @@ span.rename-file-extention {
 form.rename-form.open span.rename-file-extention {
     display: block;
 }
+
 .file-grid-inner.drag-and-drop {
     position: fixed;
     animation: hangEffect 0.5s;
-    background:white;
+    background: white;
 }
 
-.file-grid-inner.drag-and-drop  * {
+.file-grid-inner.drag-and-drop * {
     pointer-events: none;
+}
+
+.shared-with {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* padding-top: 20px; */
+}
+
+.shared-with-user img {
+    max-height: 35px;
+    border-radius: 50%;
+}
+
+.shared-with-user {
+    margin-top: 20px;
+    position: relative;
+}
+
+.shared-with-user:nth-child(2) {
+    margin-left: -10px;
+}
+
+
+.tooltip {
+    display: none;
+    background: #bfbfbf;
+    color: white;
+    padding: 5px 10px;
+    position: absolute;
+    width: max-content;
+    border-radius: 5px;
+    left: calc(100% + 10px);
+    font-size: 20px;
+    top: 2px;
+    z-index: 10;
+}
+
+.shared-with-user:hover .tooltip {
+    display: block;
+}
+
+.tooltip::before {
+    content: '';
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 7px solid #bfbfbf;
+    position: absolute;
+    top: 9px;
+    left: -7px;
 }
 
 @keyframes hangEffect {

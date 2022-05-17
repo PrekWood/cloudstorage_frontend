@@ -5,6 +5,8 @@ import Recent from './Controllers/Recent/Recent';
 import Settings from './Controllers/Settings/Settings';
 import Files from "./Controllers/Files/Files";
 import './App.css';
+import Share from "./Controllers/Share/Share";
+import SharedFiles from "./Controllers/SharedFiles/SharedFiles";
 
 window.API_URL = "http://localhost:8080/api";
 window.BACKEND_BASE_URL = "http://localhost:8080";
@@ -15,6 +17,8 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
+                    <Route exact path='/share' element={< Share/>}></Route>
+                    <Route exact path='/shared' element={< SharedFiles/>}></Route>
                     <Route exact path='/login' element={< Login/>}></Route>
                     <Route exact path='/' element={< Recent/>}></Route>
                     <Route exact path='/files' element={< Files/>}></Route>

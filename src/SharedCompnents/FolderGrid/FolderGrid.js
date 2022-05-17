@@ -16,6 +16,9 @@ import {ReactComponent as PreviewSvg} from "./imgs/preview.svg";
 import {ReactComponent as RenameSvg} from "./imgs/edit.svg";
 import {ReactComponent as SaveSvg} from "./imgs/save.svg";
 import folderIcon from "./imgs/folder.svg";
+import LayoutContext from "../../Classes/LayoutContext";
+import Folder from "../../Classes/Folder";
+import defaultUserIcon from "../UserMiniature/imgs/default_user.png";
 
 export default function FolderGrid(props) {
 
@@ -121,10 +124,23 @@ export default function FolderGrid(props) {
 
     function navigateToFolder(){
         if(!renameState){
-            folder.setCurrentFolderInLocalStorage();
+            let context = LayoutContext.getContext(props.contextName);
+            context.currentFolder = Folder.castToFolder(folder);
+            LayoutContext.saveContext(props.contextName, context)
+
             props.reHydrateListing();
         }
     }
+
+    function openSharingModal(){
+        props.setPreviewState(false);
+        props.setSharingState({
+            isActive:true,
+            type:"folder",
+            object:folder
+        });
+    }
+
 
     if(folder == null){
         return <></>
@@ -137,6 +153,19 @@ export default function FolderGrid(props) {
                     className="folder-icon"
                     src={folderIcon}
                 />
+
+                {/*Shared with*/}
+                <div className="shared-with">
+                    {Validate.isEmpty(folder.sharedWith) || folder.sharedWith.length === 1 ? "" : folder.sharedWith.map((sharedWithUser)=>(
+                        <div className="shared-with-user" key={`shared_with_folder_grid_${folder.id}_${sharedWithUser.userId}`}>
+                            <img src={Validate.isEmpty(sharedWithUser.userImg) ? defaultUserIcon : `${window.API_URL}/user/${sharedWithUser.userId}/image`} />
+                            <div className="tooltip">
+                                {sharedWithUser.userName}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
                 {/*Name and rename form*/}
                 <form className={`rename-form ${renameState ? "open" : "closed"}`} onSubmit={renameFolder}>
                     <textarea
@@ -163,10 +192,12 @@ export default function FolderGrid(props) {
                             <DownloadSvg/>
                             <span>Download</span>
                         </a>
-                        <a className="file-dropdown-links" onClick={downloadFolder}>
-                            <ShareSvg/>
-                            <span>Share</span>
-                        </a>
+                        {props.variation === "shared-files"?"":(
+                            <a className="file-dropdown-links" onClick={openSharingModal}>
+                                <ShareSvg/>
+                                <span>Share</span>
+                            </a>
+                        )}
                         <a className="file-dropdown-links" onClick={openRenameForm}>
                             <RenameSvg/>
                             <span>Rename</span>

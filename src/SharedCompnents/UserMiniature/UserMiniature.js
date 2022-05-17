@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import defaultUserIcon from './imgs/default_user.png'
 import './UserMiniature.css'
+import Validate from "../../Classes/Validate";
 
 function UserMiniature(props) {
 
@@ -42,10 +43,10 @@ function UserMiniature(props) {
             {
                 variation == "navigation" ? (
                     <>
-                        <img className="user-icon" src={defaultUserIcon} onClick={toggleModal} />
+                        <img className="user-icon" src={user==null || Validate.isEmpty(user.imagePath) ? defaultUserIcon : `${window.API_URL}/user/${user.id}/image`} onClick={toggleModal} />
                         <span className="user-name">{user == null ? "" : user.firstName}</span>
                         <div className={`user-modal ${isModalActive ? "" : "closed"}`}>
-                            <a onClick={() => { }}>Settings</a>
+                            <a onClick={() => { window.location.href="/settings" }}>Settings</a>
                             <a onClick={logout}>Logout</a>
                         </div>
                         <div className={`filter user-modal-filter ${isModalActive ? "" : "hidden"}`}
@@ -54,11 +55,11 @@ function UserMiniature(props) {
                     </>
                 ) : (
                     <>
-                        <img className="user-icon" src={defaultUserIcon} />
+                        <img className="user-icon" src={user==null || Validate.isEmpty(user.imagePath) ? defaultUserIcon : `${window.API_URL}/user/${user.id}/image`} />
                         <div className="user-info">
                             <span className="user-name">{user == null ? "" : `${user.firstName} ${user.lastName}`}</span>
                             <span className="user-email">{user == null ? "" : user.email}</span>
-                            <a onClick={props.logout} className="user-logout">Logout</a>
+                            {variation === "no-logout" ? "" : (<a onClick={props.logout} className="user-logout">Logout</a>)}
                         </div>
                     </>
                 )
