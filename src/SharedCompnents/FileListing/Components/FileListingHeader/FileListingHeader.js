@@ -60,6 +60,7 @@ function FileListingHeader(props) {
                     <FileUploader
                         reHydrateListing={props.reHydrateListing}
                         updateSortingPrefs={props.updateSortingPrefs}
+                        contextName={props.contextName}
                     />
                     {(Validate.isArrayEmpty(props.files) && props.sortingPreferences.isEmpty()) ? "" : (
                         <FileSearch

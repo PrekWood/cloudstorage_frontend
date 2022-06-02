@@ -22,10 +22,17 @@ export default function FileUploader(props) {
         const file = new UserFile();
         file.fileToUpload = event.target[0].files[0]
         file.uploadFile(
-            () => {
+            props.contextName,
+            (response) => {
                 props.reHydrateListing()
             },
-            () => { }
+            (request) => {
+                if (!Validate.isEmpty(request.response)) {
+                    window.displayError(request.response.data.error);
+                } else {
+                    window.displayError("Something went wrong. Please try again later");
+                }
+            }
         );
     }
 

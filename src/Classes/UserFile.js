@@ -75,8 +75,10 @@ export default class UserFile extends Shareable {
                 }
             }
         ).then((response) => {
+            console.log("file upload succes")
             successMethod(response);
         }).catch((error) => {
+            console.log("file upload error")
             errorMethod(error);
         });
     }

@@ -12,7 +12,7 @@ function Nav(props) {
     return (
         <>
             <nav>
-                <a href="/dashboard" className="nav-item logo-container">
+                <a href="/" className="nav-item logo-container">
                     <img src={logoSvg} />
                 </a>
                 <a href="/" className={`nav-item ${window.location.href == (window.FRONTEND_BASE_URL + "/") ? "active" : ""}`}>

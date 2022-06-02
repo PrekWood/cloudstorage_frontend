@@ -32,7 +32,7 @@ span.file-list-type-shared-with {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 300px);
+    height: calc(100vh - 335px);
     background: #00a8ff73;
     border-radius: 10px;
     font-size: 45px;
@@ -41,4 +41,8 @@ span.file-list-type-shared-with {
 
 .shared-files-no-files a {
     color: white;
+}
+
+.shared-with-user:nth-child(3) {
+    margin-left: -10px;
 }

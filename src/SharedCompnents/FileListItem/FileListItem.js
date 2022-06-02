@@ -217,7 +217,7 @@ export default function FileListItem(props) {
                         </button>
                         {dropdownState ? (
                             <div className="file-dropdown-menu">
-                                {Validate.isEmpty(props.variation) || props.variation !== "shared-files" ? "" : (
+                                {props.variation === "shared-files" ? "" : (
                                     <a className="file-dropdown-links" onClick={openSharingModal}>
                                         <ShareSvg />
                                         <span>Share</span>

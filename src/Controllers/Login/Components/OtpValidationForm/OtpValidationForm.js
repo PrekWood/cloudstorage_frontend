@@ -144,10 +144,14 @@ function OtpValidationForm(props) {
         window.location.href = "/";
     }
 
-    function errorValidateOtp() {
+    function errorValidateOtp(request) {
         setLoadingAnimation(false);
         shakeForm();
-        setErrors("The PIN is not correct. Please try again.")
+        if(Validate.isEmpty(request.response.data)){
+            setErrors("The PIN is not correct. Please try again.")
+        }else{
+            setErrors(request.response.data.error)
+        }
     }
 
     function successResend() {

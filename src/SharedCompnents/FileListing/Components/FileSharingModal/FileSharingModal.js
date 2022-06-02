@@ -136,6 +136,7 @@ export default function FileSharingModal(props) {
                     />
 
                     <FileSharingByEmail
+                        sharingType={sharingType}
                         setSharingType={setSharingType}
                         file={object}
                         fileType={sharingType}

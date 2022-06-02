@@ -150,6 +150,7 @@ export default function FileListingList(props) {
                                     // Sharing
                                     setSharingState={props.setSharingState}
                                     contextName = {props.contextName}
+                                    variation = {props.variation}
                                 />
                             ))
                         )
@@ -169,6 +170,7 @@ export default function FileListingList(props) {
                                 previewFile={props.previewFile}
                                 // Sharing
                                 setSharingState={props.setSharingState}
+                                variation = {props.variation}
                             />
                         ))
                 }

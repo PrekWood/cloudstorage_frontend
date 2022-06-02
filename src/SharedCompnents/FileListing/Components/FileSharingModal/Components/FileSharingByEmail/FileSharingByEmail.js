@@ -31,6 +31,13 @@ export default function FileSharingByEmail(props) {
         }, 3000)
     }
 
+    function clearUsersToShare(){
+        setUsersToShare([]);
+    }
+    useEffect(()=>{
+        clearUsersToShare();
+    },[props.sharingType])
+
     function addUser(event) {
         event.preventDefault();
 
@@ -46,7 +53,7 @@ export default function FileSharingByEmail(props) {
             if (formFields[formFieldIndex].id == "can_delete") {
                 can_delete = formFields[formFieldIndex].checked
             }
-            if (formFields[formFieldIndex].id == "can_share") {
+            if (formFields[formFieldIndex].id == "can_edit") {
                 can_edit = formFields[formFieldIndex].checked
             }
         }

@@ -151,11 +151,15 @@ export default function FileGrid(props) {
             },
             (request) => {
                 setLoadingAnimationState(false);
+                setRenameState(false)
                 if (!Validate.isEmpty(request.response)) {
                     window.displayError(request.response.data.error);
                 } else {
                     window.displayError("Something went wrong. Please try again later");
                 }
+                setRenameValue(file.name)
+                document.getElementById(`rename_file_textarea_grid_${file.id}`).classList.remove("invalid");
+                document.getElementById(`rename_file_textarea_grid_${file.id}`).value = file.name;
             }
         );
     }
